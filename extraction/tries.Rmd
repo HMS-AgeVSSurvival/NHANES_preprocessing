@@ -1,0 +1,20 @@
+# # If feather package is not installed
+```{r}
+packrat::init("~/projects/babynames")
+# ```{r}
+# install.packages("feather")
+# ```
+
+```{r}
+library("feather")
+```
+
+
+```{r}
+path_file <- "data/nhanes_merged_2018_06202020.Rdata"
+nb_patient_sample <- 100  # Only for big data frames
+```
+
+```{r}
+name_loaded_file <- list(load(path_file))
+```
