@@ -40,6 +40,7 @@
         "ms-python.vscode-pylance",
         "ms-python.python",
         "tht13.python",
+        "ikuyadeu.r",
     ],
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     // "forwardPorts": [

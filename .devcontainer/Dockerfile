@@ -1,5 +1,8 @@
 FROM python:latest
 
+# Add R
+RUN apt-get update && apt-get install -y --no-install-recommends r-base
+
 RUN echo 'root:root' | chpasswd
 ENV SSH_AUTH_SOCK=/ssh-agent
 
