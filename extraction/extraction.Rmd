@@ -1,0 +1,41 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r Load RNHANES Library, warning=TRUE}
+library(RNHANES)
+```
+
+
+```{r Download file names, warning=TRUE}
+files <- nhanes_data_files()
+```
+
+
+```{r Only take the interesting components, warning=TRUE}
+files_laboratory <- nhanes_search(files, "", component == "laboratory")
+files_examination <- nhanes_search(files, "", component == "examination")
+```
+
+
+```{r Remove the nans, warning=TRUE}
+cleaned_data_file_name_laboratory <- files_laboratory["data_file_name"][is.na(files_laboratory["data_file_name"]) == FALSE]
+cleaned_cycle_laboratory <- files_laboratory["cycle"][is.na(files_laboratory["data_file_name"]) == FALSE]
+
+cleaned_data_file_name_examination <- files_examination["data_file_name"][is.na(files_examination["data_file_name"]) == FALSE]
+cleaned_cycle_examination <- files_examination["cycle"][is.na(files_examination["data_file_name"]) == FALSE]
+```
+
+
+```{r Downloand the files, warning=TRUE}
+for (i in 569:length(cleaned_cycle_laboratory)){
+  if (i %in% c(47, 49, 155, 158, 266, 568, 514, 507)) {
+    next
+  }
+  print(i)
+  print(cleaned_cycle_laboratory[i])
+  print(cleaned_data_file_name_laboratory[i])
+  nhanes_load_data(cleaned_data_file_name_laboratory[i], cleaned_cycle_laboratory[i], destination = "~/HMS/NHANES_preprocessing/extraction/raw_data/laboratory/")
+}
+```
