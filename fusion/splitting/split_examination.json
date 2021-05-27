@@ -1,22 +1,22 @@
 {
-    "Body": [
+    "body": [
         "Balance",
         "Bioelectrical Impedance Analysis",
         "Body Measures",
         "Growth Chart"
     ],
-    "Eyes": [
+    "eyes": [
         "Ophthalmology - Frequency Doubling Technology",
         "Ophthalmology - Retinal Imaging",
         "Vision"
     ],
-    "Ears": [
+    "ears": [
         "Audiometry",
         "Audiometry - Acoustic Reflex",
         "Audiometry - Tympanometry",
         "Audiometry \u2013 Wideband Reflectance"
     ],
-    "Nose and Mouth": [
+    "nose_mouth": [
         "Fluorosis - Clinical",
         "Fluorosis - Clinical 20-29 Years",
         "Oral Health",
@@ -28,21 +28,24 @@
         "Oral Health - Recommendation of Care",
         "Taste & Smell"
     ],
-    "Lungs": [
+    "lungs": [
         "Exhaled Nitric Oxide",
         "Spirometry - Pre and Post-Bronchodilator",
         "Spirometry - Raw Curve Data",
         "Tuberculosis"
     ],
-    "Heart": [
-        "Cardiovascular Fitness"
+    "heart": [
+        "Blood Pressure",
+        "Blood Pressure - Oscillometric Measurements",
+        "Cardiovascular Fitness",
+        "Lower Extremity Disease - Ankle Brachial Blood Pressure Index"
     ],
-    "Liver": [
+    "liver": [
         "Hepatic/Gallbladder Ultrasound and Hepatic Steatosis",
         "Hepatic/Gallbladder Ultrasound and Hepatic Steatosis, Second Exam",
         "Liver Ultrasound Transient Elastography"
     ],
-    "Bones": [
+    "bones": [
         "Arthritis Body Measures",
         "Dual Energy X-ray Absorptiometry - Android/Gynoid",
         "Dual Energy X-ray Absorptiometry - Femur",
@@ -69,29 +72,24 @@
         "Dual-Energy X-ray Absorptiometry - Whole Body",
         "Dual-Energy X-ray Absorptiometry - Whole Body, Second Exam"
     ],
-    "Nerves": [
+    "nerves": [
         "Lower Extremity Disease - Peripheral Neuropathy"
     ],
-    "Muscles": [
+    "muscles": [
         "Muscle Strength",
         "Muscle Strength - Grip Test"
     ],
-    "Skin": [
+    "skin": [
         "Dermatology"
     ],
-    "Physical Activity": [
+    "physical_activity": [
         "Physical Activity Monitor",
         "Physical Activity Monitor - Day",
         "Physical Activity Monitor - Header",
         "Physical Activity Monitor - Hour",
         "Physical Activity Monitor - Minute"
     ],
-    "Blood Pressure": [
-        "Blood Pressure",
-        "Blood Pressure - Oscillometric Measurements",
-        "Lower Extremity Disease - Ankle Brachial Blood Pressure Index"
-    ],
-    "Other": [
+    "other": [
         "Shared Exclusion Questions"
     ]
 }
