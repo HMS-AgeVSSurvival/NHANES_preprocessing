@@ -131,3 +131,5 @@ dmypy.json
 
 /.vscode
 .Rproj.user
+/data
+/fusion/fusionned_data
