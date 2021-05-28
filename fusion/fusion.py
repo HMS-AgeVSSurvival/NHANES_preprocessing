@@ -48,9 +48,6 @@ def fusion_examination():
             raw_data.set_index("SEQN", inplace=True)
             raw_data.drop(columns=["file_name", "cycle", "begin_year", "end_year"], inplace=True)
 
-            object_columns = raw_data.columns[raw_data.dtypes == "object"]
-            raw_data[object_columns] = raw_data[object_columns].astype(str)
-
             data_category.loc[raw_data.index, raw_data.columns] = raw_data
 
         data_category.dropna(how="all").reset_index().to_feather(
