@@ -5,17 +5,27 @@ editor_options:
 ---
 ```{r Load RNHANES Library, warning=TRUE}
 library(RNHANES)
+library(feather)
 ```
 
 
-```{r Download file names, warning=TRUE}
+```{r Download file names and variables, warning=TRUE}
 files <- nhanes_data_files()
+variables <- nhanes_variables()
 ```
 
 
 ```{r Only take the interesting components, warning=TRUE}
 files_laboratory <- nhanes_search(files, "", component == "laboratory")
 files_examination <- nhanes_search(files, "", component == "examination")
+variables_laboratory <- nhanes_search(variables, "", component == "laboratory")
+variables_examination <- nhanes_search(variables, "", component == "examination")
+```
+
+
+```{r Save variable info, warning=TRUE}
+write_feather(variables_laboratory, "./raw_data/variables_laboratory.feather")
+write_feather(variables_examination, "./raw_data/variables_examination.feather")
 ```
 
 
@@ -28,8 +38,8 @@ cleaned_cycle_examination <- files_examination["cycle"][is.na(files_examination[
 ```
 
 
-```{r Downloand the files, warning=TRUE}
-for (i in 569:length(cleaned_cycle_laboratory)){
+```{r Downloand the laboratory files, warning=TRUE}
+for (i in 1:length(cleaned_cycle_laboratory)){
   if (i %in% c(47, 49, 155, 158, 266, 568, 514, 507)) {
     next
   }
@@ -37,5 +47,18 @@ for (i in 569:length(cleaned_cycle_laboratory)){
   print(cleaned_cycle_laboratory[i])
   print(cleaned_data_file_name_laboratory[i])
   nhanes_load_data(cleaned_data_file_name_laboratory[i], cleaned_cycle_laboratory[i], destination = "~/HMS/NHANES_preprocessing/extraction/raw_data/laboratory/")
+}
+```
+
+
+```{r Downloand the examination files, warning=TRUE}
+for (i in 1:length(cleaned_cycle_examination)){
+  if (i %in% c(43, 55, 126, 143, 144, 146, 158, 159, 160)) {
+    next
+  }
+  print(i)
+  print(cleaned_cycle_examination[i])
+  print(cleaned_data_file_name_examination[i])
+  nhanes_load_data(cleaned_data_file_name_examination[i], cleaned_cycle_examination[i], destination = "~/HMS/NHANES_preprocessing/extraction/raw_data/examination/")
 }
 ```
