@@ -39,8 +39,6 @@
         "Lower Extremity Disease - Ankle Brachial Blood Pressure Index"
     ],
     "liver": [
-        "Hepatic/Gallbladder Ultrasound and Hepatic Steatosis",
-        "Hepatic/Gallbladder Ultrasound and Hepatic Steatosis, Second Exam",
         "Liver Ultrasound Transient Elastography"
     ],
     "bones": [
@@ -66,7 +64,6 @@
         "Dual-Energy X-ray Absorptiometry - T8 Vertebrae Morphology",
         "Dual-Energy X-ray Absorptiometry - T9 Vertebrae Morphology",
         "Dual-Energy X-ray Absorptiometry - Vertebral Fracture Assessment",
-        "Dual-Energy X-ray Absorptiometry - Vertebral Fracture Assessment Results Comparison Study",
         "Dual-Energy X-ray Absorptiometry - Whole Body",
         "Dual-Energy X-ray Absorptiometry - Whole Body, Second Exam"
     ],

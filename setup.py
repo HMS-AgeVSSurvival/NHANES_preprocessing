@@ -7,5 +7,5 @@ setup(
     packages=find_packages(),
     requires=["setuptools", "wheel"],
     install_requires=["numpy", "pandas", "pyarrow", "xport==2.0.2"],
-    extras_require={"dev": ["tqdm", "ipykernel", "black"]},
+    extras_require={"dev": ["tqdm", "jupyter", "black"]},
 )
