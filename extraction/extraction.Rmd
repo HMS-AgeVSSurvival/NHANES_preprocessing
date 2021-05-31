@@ -3,7 +3,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-```{r Load RNHANES Library, warning=TRUE}
+```{r Load RNHANES library, warning=TRUE}
 library(RNHANES)
 library(feather)
 ```
@@ -25,7 +25,9 @@ variables_examination <- nhanes_search(variables, "", component == "examination"
 
 ```{r Save variable info, warning=TRUE}
 write_feather(variables_laboratory, "./raw_data/variables_laboratory.feather")
+write_feather(files_laboratory, "./raw_data/files_laboratory.feather")
 write_feather(variables_examination, "./raw_data/variables_examination.feather")
+write_feather(files_examination, "./raw_data/files_examination.feather")
 ```
 
 
