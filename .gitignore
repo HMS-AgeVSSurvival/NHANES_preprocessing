@@ -133,5 +133,6 @@ dmypy.json
 .Rproj.user
 /data
 /fusion/fusionned_data
+/nan_cleaning/data
 
 *.zip
