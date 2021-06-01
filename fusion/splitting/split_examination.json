@@ -17,6 +17,7 @@
     ],
     "nose_mouth": [
         "Fluorosis - Clinical",
+        "Fluorosis - Clinical 20-29 Years",
         "Oral Health",
         "Oral Health - Addendum",
         "Oral Health - Dentition",
@@ -34,6 +35,7 @@
     ],
     "heart": [
         "Blood Pressure",
+        "Blood Pressure - Oscillometric Measurement",
         "Blood Pressure - Oscillometric Measurements",
         "Cardiovascular Fitness",
         "Lower Extremity Disease - Ankle Brachial Blood Pressure Index"
@@ -64,6 +66,7 @@
         "Dual-Energy X-ray Absorptiometry - T8 Vertebrae Morphology",
         "Dual-Energy X-ray Absorptiometry - T9 Vertebrae Morphology",
         "Dual-Energy X-ray Absorptiometry - Vertebral Fracture Assessment",
+        "Dual-Energy X-ray Absorptiometry - Vertebral Fracture Assessment Results Comparison Study",
         "Dual-Energy X-ray Absorptiometry - Whole Body",
         "Dual-Energy X-ray Absorptiometry - Whole Body, Second Exam"
     ],
