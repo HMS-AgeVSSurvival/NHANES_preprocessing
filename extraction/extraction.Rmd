@@ -24,10 +24,10 @@ variables_examination <- nhanes_search(variables, "", component == "examination"
 
 
 ```{r Save variable info, warning=TRUE}
-write_feather(variables_laboratory, "./raw_data/variables_laboratory.feather")
-write_feather(files_laboratory, "./raw_data/files_laboratory.feather")
-write_feather(variables_examination, "./raw_data/variables_examination.feather")
-write_feather(files_examination, "./raw_data/files_examination.feather")
+write_feather(variables_laboratory, "./data/variables_laboratory.feather")
+write_feather(files_laboratory, "./data/files_laboratory.feather")
+write_feather(variables_examination, "./data/variables_examination.feather")
+write_feather(files_examination, "./data/files_examination.feather")
 ```
 
 
@@ -48,7 +48,7 @@ for (i in 1:length(cleaned_cycle_laboratory)){
   print(i)
   print(cleaned_cycle_laboratory[i])
   print(cleaned_data_file_name_laboratory[i])
-  nhanes_load_data(cleaned_data_file_name_laboratory[i], cleaned_cycle_laboratory[i], destination = "~/HMS/NHANES_preprocessing/extraction/raw_data/laboratory/")
+  nhanes_load_data(cleaned_data_file_name_laboratory[i], cleaned_cycle_laboratory[i], destination = "~/HMS/NHANES_preprocessing/extraction/data/laboratory/")
 }
 ```
 
@@ -61,6 +61,6 @@ for (i in 1:length(cleaned_cycle_examination)){
   print(i)
   print(cleaned_cycle_examination[i])
   print(cleaned_data_file_name_examination[i])
-  nhanes_load_data(cleaned_data_file_name_examination[i], cleaned_cycle_examination[i], destination = "~/HMS/NHANES_preprocessing/extraction/raw_data/examination/")
+  nhanes_load_data(cleaned_data_file_name_examination[i], cleaned_cycle_examination[i], destination = "~/HMS/NHANES_preprocessing/extraction/data/examination/")
 }
 ```

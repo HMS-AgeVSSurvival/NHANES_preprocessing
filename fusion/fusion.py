@@ -19,7 +19,7 @@ def load_information_files(prefix=""):
     with open(prefix + "fusion/splitting/split_examination.json") as json_file:
         splitting_examination = json.load(json_file)
 
-    information_files = pd.read_feather(prefix + "extraction/raw_data/files_examination.feather")
+    information_files = pd.read_feather(prefix + "extraction/data/files_examination.feather")
 
     return splitting_examination, information_files
 
@@ -73,12 +73,12 @@ def fusion_examination(category):
     min_seqn = float("inf")
     max_seqn = -float("inf")
     for file_name in tqdm(file_names):
-        raw_data = pd.read_csv("extraction/raw_data/examination/" + file_name + ".csv")
+        data = pd.read_csv("extraction/data/examination/" + file_name + ".csv")
 
-        if raw_data["SEQN"].min() < min_seqn:
-            min_seqn = raw_data["SEQN"].min()
-        if max_seqn < raw_data["SEQN"].max():
-            max_seqn = raw_data["SEQN"].max()
+        if data["SEQN"].min() < min_seqn:
+            min_seqn = data["SEQN"].min()
+        if max_seqn < data["SEQN"].max():
+            max_seqn = data["SEQN"].max()
 
     # Fill the dataframe
     data_category = pd.DataFrame(
@@ -86,18 +86,18 @@ def fusion_examination(category):
     )
 
     for file_name in tqdm(file_names):
-        raw_data = pd.read_csv(
-            "extraction/raw_data/examination/" + file_name + ".csv"
+        data = pd.read_csv(
+            "extraction/data/examination/" + file_name + ".csv"
         ).set_index("SEQN")
 
         if (
             "SPXRAW" not in file_name
         ):  # "Spirometry - Raw Curve Data" does not contain extra columns
-            raw_data.drop(
+            data.drop(
                 columns=["file_name", "cycle", "begin_year", "end_year"], inplace=True
             )
 
-        data_category.loc[raw_data.index, raw_data.columns] = raw_data
+        data_category.loc[data.index, data.columns] = data
 
     columns_object = data_category.columns[data_category.dtypes == "object"]
     data_category[columns_object] = data_category[columns_object].astype(
@@ -106,5 +106,5 @@ def fusion_examination(category):
 
     data_category.dropna(how="all", inplace=True)
     data_category.reset_index().to_feather(
-        f"fusion/fusionned_data/examination/{category}.feather"
+        f"fusion/data/examination/{category}.feather"
     )

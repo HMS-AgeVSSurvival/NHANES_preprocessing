@@ -28,11 +28,11 @@ class TestLoadInformationFiles(unittest.TestCase):
             file_names = get_file_names(splitting_examination, information_files, category)
 
             for file_name in file_names:
-                raw_data = pd.read_csv(
-                    "../extraction/raw_data/examination/" + file_name + ".csv"
+                data = pd.read_csv(
+                    "../extraction/data/examination/" + file_name + ".csv"
                 )
 
-                self.assertTrue("SEQN" in raw_data.columns)
-                self.assertTrue(raw_data["SEQN"].is_unique)
+                self.assertTrue("SEQN" in data.columns)
+                self.assertTrue(data["SEQN"].is_unique)
 
 

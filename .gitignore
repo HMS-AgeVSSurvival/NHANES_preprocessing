@@ -132,7 +132,7 @@ dmypy.json
 /.vscode
 .Rproj.user
 /data
-/fusion/fusionned_data
-/nan_cleaning/data
+/fusion/data
+/cleaning/data
 
 *.zip
