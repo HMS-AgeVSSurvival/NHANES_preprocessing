@@ -134,5 +134,6 @@ dmypy.json
 /data
 /fusion/data
 /cleaning/data
+/casting/data
 
 *.zip

@@ -19,7 +19,9 @@ def load_information_files(prefix=""):
     with open(prefix + "fusion/splitting/split_examination.json") as json_file:
         splitting_examination = json.load(json_file)
 
-    information_files = pd.read_feather(prefix + "extraction/data/files_examination.feather")
+    information_files = pd.read_feather(prefix + "extraction/data/files_examination.feather", columns=["data_file_description", "data_file_name"])
+
+    information_files.dropna(how="any", inplace=True)
 
     return splitting_examination, information_files
 
@@ -57,7 +59,6 @@ def get_file_names(splitting_examination, information_files, category):
                     splitting_examination[category]
                 )
             )
-            | information_files["data_file_name"].isna()
             | information_files["data_file_name"].isin(files_to_drop)
         ]
     )

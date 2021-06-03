@@ -8,7 +8,7 @@ from tqdm import tqdm
 def cleaning_examination_cli(argvs=sys.argv[1:]):
     parser = argparse.ArgumentParser("Cleaning of the examination files")
     parser.add_argument("-c", "--category", help="Name of the category", required=True)
-    parser.add_argument("-n", "--number_tradeoffs", help="Number of tradeoffs to try", required=True)
+    parser.add_argument("-n", "--number_tradeoffs", help="Number of tradeoffs to try", required=True, type=int)
 
     args = parser.parse_args(argvs)
     print(args)
@@ -38,7 +38,8 @@ def remove_nans(data_category, raw_nan_matrix, seqn_variable_trade_off):
     if nan_matrix.shape[0] * nan_matrix.shape[0] > 0:
         cleaned_data_category = data_category.loc[nan_matrix.index, nan_matrix.columns]
         
-        return cleaned_data_category.drop(columns=cleaned_data_category.columns[cleaned_data_category.std() == 0])
+        none_object_columns = cleaned_data_category.columns[cleaned_data_category.dtypes != "object"]
+        return cleaned_data_category.drop(columns=none_object_columns[cleaned_data_category[none_object_columns].std() == 0])
     else:
         return pd.DataFrame()
 
@@ -48,7 +49,7 @@ def cleaning_examination(category, number_tradeoffs):
     data_category = pd.read_feather(f"fusion/data/examination/{category}.feather").set_index("SEQN")
     object_column =  data_category.columns[data_category.dtypes == "object"]
     raw_nan_matrix = data_category.isna()
-    raw_nan_matrix[object_column] = (data_category[object_column] == str(np.nan)) | raw_nan_matrix[object_column]
+    raw_nan_matrix[object_column] = (data_category[object_column] == "NA") | (data_category[object_column] == "") | (data_category[object_column] == str(np.nan)) | raw_nan_matrix[object_column]
 
     seqn_variable_trade_offs = np.logspace(-1, 1, num=number_tradeoffs)
     results_on_trade_off = []
