@@ -13,14 +13,14 @@
         "Urine Flow Rate",
         "Urine Specific Gravity Measurement (Surplus)",
         "Cystatin C - Serum (Surplus)",
-        "Cystatin C (Surplus)",
+        "Cystatin C (Surplus)"
     ],
     "bacteria_viruses": [
         "Chlamydia & Gonorrhea - Urine",
         "Chlamydia - Urine",
         "Cytomegalovirus Genotypes - Urine (Surplus)",
         "Cytomegalovirus shedding - Urine (Surplus)",
-        "Trichomonas - Urine"
+        "Trichomonas - Urine",
         "Epstein-Barr Virus (VCA IgG) - Serum (Surplus)",
         "Cryptosporidum & Toxoplasma",
         "Syphilis-IgG, Syphilis Rapid Plasma Reagin (RPR) & Treponema pallidum Particle Agglutination (TP-PA)",
@@ -39,13 +39,21 @@
         "Hepatitis C: RNA (HCV-RNA) and Hepatitis C Genotype",
         "Herpes Simplex Virus Type-1 & Type-2",
         "Herpes Simplex Virus Type-1 (Surplus)",
+        "Measles, Mumps, Rubella & Varicella",
+        "Measles, Rubella, & Varicella",
+        "Measles, Rubella, & Varicella, Second Exam",
+        "Methicillin - Resistant Staphylococcus aureus (MRSA)",
+        "Standard Biochemistry Profile",
+        "Standard Biochemistry Profile & Hormones",
+        "Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",
+        "Tuberculosis - Quantiferon_In_Gold"
     ],
     "bones": [],
     "blood": [
         "Complete Blood Count with 5-Part Differential",
         "Complete Blood Count with 5-Part Differential - Whole Blood",
         "Complete Blood Count with 5-part Differential - Whole Blood",
-        "Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",
+        "Complete Blood Count with 5-part Differential - Whole Blood, Second Exam"
     ],
     "fat": [
         "Fatty Acids - Serum",
@@ -53,13 +61,14 @@
         "Cholesterol - LDL & Triglycerides",
         "Cholesterol - Total",
         "Cholesterol - Total & HDL",
-        "Cholesterol - Total, HDL, LDL  & Triglycerides, Second Exam"
+        "Cholesterol - Total, HDL, LDL  & Triglycerides, Second Exam",
         "Fatty Acids - Plasma (Surplus)",
         "Cholesterol - High - Density Lipoprotein (HDL)",
         "Cholesterol - High-Density Lipoprotein (HDL)",
         "Cholesterol - LDL, Triglyceride & Apoliprotein (ApoB)",
         "Cholesterol - Low - Density Lipoprotein (LDL) & Triglycerides",
         "Cholesterol - Low-Density Lipoproteins (LDL) & Triglycerides",
+        "Trans Fatty Acids"
     ],
     "glucose_insulin": [
         "Glycohemoglobin, Plasma Glucose, Serum C-peptide, & Insulin, Second Exam",
@@ -70,7 +79,7 @@
         "Insulin",
         "Apolipoprotein B",
         "Glycohemoglobin, Plasma Glucose, Serum C-peptide, & Insulin, Second Exam",
-        "Glycohemoglobin",
+        "Glycohemoglobin"
     ],
     "immune_system": [
         "Cancer antigen CA125 and CA15.3 - Serum",
@@ -245,6 +254,10 @@
         "Methylmalonic Acid",
         "Methylmalonic acid & Homocysteine",
         "Mercury - Hair",
+        "Mono-2-ethyl-5-hydroxyhexyl terephthalate, mono-2-ethyl-5-carboxypentyl terephthalate, and monooxoisononyl phthalate - Urine (Surplus)",
+        "Non-dioxin-like Polychlorinated Biphenyls",
+        "Non-dioxin-like Polychlorinated Biphenyls & Mono-ortho-substituted Polychlorinated Biphenyls - Pooled Samples",
+        "Transferrin Receptor"
     ],
     "smoking": [
         "Cotinine - Serum & Total NNAL - Urine",
@@ -261,7 +274,7 @@
         "Volatile N-Nitrosamine Compounds (VNAs) - Urine - Special Sample",
         "Formaldehyde",
         "Formaldehyde - Special Sample",
-        "Imidacloprid, 5-Hydroxy imidacloprid, Acetamiprid, N-desmethyl Acetamiprid, Clothianidin, and Thiacloprid in NHANES 2015-16 Surplus Urine",
+        "Imidacloprid, 5-Hydroxy imidacloprid, Acetamiprid, N-desmethyl Acetamiprid, Clothianidin, and Thiacloprid in NHANES 2015-16 Surplus Urine"
     ],
     "nerves": [],
     "muscles": [],
@@ -270,12 +283,15 @@
     "other": [
         "Klotho - Serum (Surplus)",
         "Human epididymal secretory protein E4 (HE4) - Serum (Surplus) (HE4)",
-        "Sex Steroid Hormone - Serum"
+        "Sex Steroid Hormone - Serum",
+        "Monoclonal gammopathy of undetermined significance (MGUS) (Surplus)",
+        "Total Testosterone",
+        "Telomere Mean and Standard Deviation (Surplus)"
     ],
     "male": [
         "Human Papillomavirus (HPV) DNA - Penile Swabs: Roche Linear Array",
         "Human Papillomavirus (HPV) DNA Results from Penile Swab Samples: Roche Linear Array",
-        "Sex Steroid Hormone - Men (Surplus)",
+        "Sex Steroid Hormone - Men (Surplus)"
     ],
     "female": [
         "Human Papillomavirus (HPV) DNA - Vaginal Swab: Digene Hybrid Capture & Prototype Line Blot Assay",
@@ -287,41 +303,22 @@
         "Chlamydia Pgp3 (plasmid gene product 3) ELISA (enzyme linked immunosorbent assay) and multiplex bead array (MBA) results",
         "Pregnancy Test - Urine",
         "Transferrin Receptor - Pregnant Women (Surplus)",
-        "Urine Pregnancy Test",
+        "Urine Pregnancy Test"
     ],
     "insecticides": [],
     "heavy_metals": [],
+    "thyroid": [
+        "Thyroid - Stimulating Hormone & Thyroxine (TSH & T4)",
+        "Thyroid Profile",
+        "Thyroid Profile (Surplus)",
+        "Parathyroid Hormone"
+    ],
+    "vitamin": [
+        "Vitamin A, Vitamin E & Carotenoids",
+        "Vitamin A, Vitamin E, & Carotenoids, Second Exam",
+        "Vitamin B12",
+        "Vitamin B6",
+        "Vitamin C",
+        "Vitamin D"
+    ]
 }
-
-
-
-[
-    "Imidacloprid, 5-Hydroxy imidacloprid, Acetamiprid, N-desmethyl Acetamiprid, Clothianidin, and Thiacloprid in NHANES 2015-16 Surplus Urine",
-    "Measles, Mumps, Rubella & Varicella",
-    "Measles, Rubella, & Varicella",
-    "Measles, Rubella, & Varicella, Second Exam",
-    "Methicillin - Resistant Staphylococcus aureus (MRSA)",
-    "Mono-2-ethyl-5-hydroxyhexyl terephthalate, mono-2-ethyl-5-carboxypentyl terephthalate, and monooxoisononyl phthalate - Urine (Surplus)",
-    "Monoclonal gammopathy of undetermined significance (MGUS) (Surplus)",
-    "Non-dioxin-like Polychlorinated Biphenyls",
-    "Non-dioxin-like Polychlorinated Biphenyls & Mono-ortho-substituted Polychlorinated Biphenyls - Pooled Samples",
-    "Parathyroid Hormone",
-    "Pooled-Sample Technical Support File",
-    "Standard Biochemistry Profile",
-    "Standard Biochemistry Profile & Hormones",
-    "Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",
-    "Telomere Mean and Standard Deviation (Surplus)",
-    "Thyroid - Stimulating Hormone & Thyroxine (TSH & T4)",
-    "Thyroid Profile",
-    "Thyroid Profile (Surplus)",
-    "Total Testosterone",
-    "Trans Fatty Acids",
-    "Transferrin Receptor",
-    "Tuberculosis - Quantiferon_In_Gold",
-    "Vitamin A, Vitamin E & Carotenoids",
-    "Vitamin A, Vitamin E, & Carotenoids, Second Exam",
-    "Vitamin B12",
-    "Vitamin B6",
-    "Vitamin C",
-    "Vitamin D",
-]
