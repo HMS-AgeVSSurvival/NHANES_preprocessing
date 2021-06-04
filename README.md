@@ -26,7 +26,7 @@ Start by installing the Python package thanks the the [setup.py](./setup.py) fil
 ```Python
 pip install -e .[dev]
 ```
-This stage has the goal to fusion the different files, given by the previous step, into one single file, representing a category. The way the categories are formed is shown in the file [split_*main_category*](./fusion/splitting/split_examination.json)
+This stage has the goal to fusion the different files, given by the previous step, into one single file, representing a category. The way the categories are formed is shown in the file [split_*main_category*](./fusion/splitting/split_examination.json).
 
 
 ## [III Cleaning](./cleaning)
