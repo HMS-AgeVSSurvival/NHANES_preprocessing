@@ -10,9 +10,9 @@ setup(
     extras_require={"dev": ["tqdm", "jupyter", "ipympl", "black", "matplotlib"]},
     entry_points={
         "console_scripts": [
-            "fusion_examination=fusion.fusion:fusion_examination_cli",
-            "cleaning_examination=cleaning.cleaning:cleaning_examination_cli",
-            "casting_examination=casting.casting:casting_examination_cli",
+            "fusion=fusion.fusion:fusion_cli",
+            "cleaning=cleaning.cleaning:cleaning_cli",
+            "casting=casting.casting:casting_cli",
         ]
     },
 )

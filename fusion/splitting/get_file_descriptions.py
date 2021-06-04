@@ -16,3 +16,4 @@ def get_file_description(main_category):
 if __name__ == "__main__":
     get_file_description("examination")
     get_file_description("laboratory")
+    get_file_description("demographics")

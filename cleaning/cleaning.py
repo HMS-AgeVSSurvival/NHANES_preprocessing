@@ -5,15 +5,19 @@ import pandas as pd
 from tqdm import tqdm
 
 
-def cleaning_examination_cli(argvs=sys.argv[1:]):
-    parser = argparse.ArgumentParser("Cleaning of the examination files")
+def cleaning_cli(argvs=sys.argv[1:]):
+    parser = argparse.ArgumentParser("Cleaning of the files after the fusion step")
+    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "demographics"], required=True)
     parser.add_argument("-c", "--category", help="Name of the category", required=True)
-    parser.add_argument("-n", "--number_tradeoffs", help="Number of tradeoffs to try", required=True, type=int)
+    parser.add_argument("-n", "--number_tradeoffs", help="Number of tradeoffs to try", type=int)
 
     args = parser.parse_args(argvs)
     print(args)
 
-    cleaning_examination(args.category, args.number_tradeoffs)
+    if args.main_category == "demographics":
+        cleaning_demographics()
+    else:
+        cleaning(args.main_category, args.category, args.number_tradeoffs)
 
 
 def optimal_function(data_frame):
@@ -45,8 +49,8 @@ def remove_nans(data_category, raw_nan_matrix, seqn_variable_trade_off):
 
 
 
-def cleaning_examination(category, number_tradeoffs):
-    data_category = pd.read_feather(f"fusion/data/examination/{category}.feather").set_index("SEQN")
+def cleaning(main_category, category, number_tradeoffs):
+    data_category = pd.read_feather(f"fusion/data/{main_category}/{category}.feather").set_index("SEQN")
     object_column =  data_category.columns[data_category.dtypes == "object"]
     raw_nan_matrix = data_category.isna()
     raw_nan_matrix[object_column] = (data_category[object_column] == "NA") | (data_category[object_column] == "") | (data_category[object_column] == str(np.nan)) | raw_nan_matrix[object_column]
@@ -68,7 +72,17 @@ def cleaning_examination(category, number_tradeoffs):
     if sum(results_on_trade_off) > 0:
         cleaned_data_category = remove_nans(data_category, raw_nan_matrix, seqn_variable_trade_offs[np.argmax(results_on_trade_off)]) 
 
-        cleaned_data_category.reset_index().to_feather(f"cleaning/data/examination/{category}.feather")
+        cleaned_data_category.reset_index().to_feather(f"cleaning/data/{main_category}/{category}.feather")
     else:
         print("None of the preprocessing attempts worked...")       
 
+
+
+def cleaning_demographics():
+    data_category = pd.read_feather("fusion/data/demographics/demographics.feather").set_index("SEQN")
+
+    cleaned_age_in_month = data_category["RIDAGEYR"] * 12
+    cleaned_age_in_month.loc[data_category["RIDAGEEX"].notna()] = data_category.loc[data_category["RIDAGEEX"].notna(), "RIDAGEEX"]
+    data_category["RIDAGEEX_extended"] = cleaned_age_in_month
+
+    data_category.drop(columns=["RIDAGEYR", "RIDAGEEX"]).reset_index().to_feather(f"cleaning/data/demographics/demographics.feather")
