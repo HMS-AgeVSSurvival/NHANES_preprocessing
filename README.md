@@ -28,13 +28,16 @@ pip install -e .[dev]
 ```
 This stage has the goal to fusion the different files, given by the previous step, into one single file, representing a category. The way the categories are formed is shown in the file [split_*main_category*](./fusion/splitting/split_examination.json)
 
+
 ## [III Cleaning](./cleaning)
 [Code in Python]\
 This stage cleans the files obtained in the previous step by removing the nans.
 
+
 ## [IV Casting](./casting)
 [Code in Python]\
 This stage casts the files obtained in the previous step by casting the types of the variables to float32. When a categorical variable in encountered, the variable is converted in dummy vectors.
+
 
 ## [V Merge demographics](./merge_demographics)
 [Code in Python]\
