@@ -135,5 +135,6 @@ dmypy.json
 /fusion/data
 /cleaning/data
 /casting/data
+/merge_demographics/data
 
 *.zip

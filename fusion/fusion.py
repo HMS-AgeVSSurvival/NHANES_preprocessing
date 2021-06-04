@@ -97,7 +97,7 @@ def fusion(main_category, category):
         ).set_index("SEQN")
 
         if main_category == "demographics":
-            data.drop(columns=data.columns[~data.columns.isin(["SDDSRVYR", "RIAGENDR", "RIDAGEYR", "RIDAGEEX", "RIDRETH1"])], inplace=True)
+            data.drop(columns=data.columns[~data.columns.isin(["RIAGENDR", "RIDAGEYR", "RIDAGEEX", "RIDRETH1"])], inplace=True)
         else:
             if (
                 "SPXRAW" not in file_name

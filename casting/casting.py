@@ -19,7 +19,7 @@ def casting_cli(argvs=sys.argv[1:]):
 
 
 def casting(main_category, category):
-    data_category = pd.read_feather(f"cleaning/data/{main_category}/{category}.feather")
+    data_category = pd.read_feather(f"cleaning/data/{main_category}/{category}.feather").set_index("SEQN")
 
     columns_to_dummies = data_category.columns[data_category.dtypes == "object"]
     if len(columns_to_dummies) > 0:
