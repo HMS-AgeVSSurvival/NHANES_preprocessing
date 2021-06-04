@@ -1,3 +1,4 @@
+# --- Python gitignore --- #
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -104,7 +105,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
+env*/
 venv/
 ENV/
 env.bak/
@@ -127,3 +128,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+/.vscode
+.Rproj.user
+/data
+/fusion/data
+/cleaning/data
+/casting/data
+/merge_demographics/data
+
+*.zip

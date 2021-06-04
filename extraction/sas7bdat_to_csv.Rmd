@@ -1,0 +1,16 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r Load sas7bdat library, warning=TRUE}
+library(sas7bdat)
+```
+
+```{r Load sas7bdat file, warning=TRUE}
+sas_7_bdat <- read.sas7bdat("data/examination/sas7bdat/spxraw_e.sas7bdat", debug=TRUE)
+```
+
+```{r Write the sas7bdat to csv, warning=TRUE}
+write.csv(sas_7_bdat, "data/examination/SPXRAW_E.csv")
+```

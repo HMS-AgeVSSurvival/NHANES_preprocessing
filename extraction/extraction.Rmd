@@ -1,0 +1,88 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r Load RNHANES library, warning=TRUE}
+library(RNHANES)
+library(feather)
+```
+
+
+```{r Download file names and variables, warning=TRUE}
+files <- nhanes_data_files()
+variables <- nhanes_variables()
+```
+
+
+```{r Only take the interesting components, warning=TRUE}
+files_laboratory <- nhanes_search(files, "", component == "laboratory")
+files_examination <- nhanes_search(files, "", component == "examination")
+files_demographics <- nhanes_search(files, "", component == "demographics")
+
+variables_laboratory <- nhanes_search(variables, "", component == "laboratory")
+variables_examination <- nhanes_search(variables, "", component == "examination")
+variables_demographics <- nhanes_search(variables, "", component == "demographics")
+```
+
+
+```{r Save variable info, warning=TRUE}
+write_feather(files_laboratory, "./data/files_laboratory.feather")
+write_feather(files_examination, "./data/files_examination.feather")
+write_feather(files_demographics, "./data/files_demographics.feather")
+
+write_feather(variables_laboratory, "./data/variables_laboratory.feather")
+write_feather(variables_examination, "./data/variables_examination.feather")
+write_feather(variables_demographics, "./data/variables_demographics.feather")
+```
+
+
+```{r Remove the nans, warning=TRUE}
+cleaned_data_file_name_laboratory <- files_laboratory["data_file_name"][is.na(files_laboratory["data_file_name"]) == FALSE]
+cleaned_cycle_laboratory <- files_laboratory["cycle"][is.na(files_laboratory["data_file_name"]) == FALSE]
+
+cleaned_data_file_name_examination <- files_examination["data_file_name"][is.na(files_examination["data_file_name"]) == FALSE]
+cleaned_cycle_examination <- files_examination["cycle"][is.na(files_examination["data_file_name"]) == FALSE]
+
+cleaned_data_file_name_demographics <- files_demographics["data_file_name"][is.na(files_demographics["data_file_name"]) == FALSE]
+cleaned_cycle_demographics <- files_demographics["cycle"][is.na(files_demographics["data_file_name"]) == FALSE]
+```
+
+
+```{r Downloand the laboratory files, warning=TRUE}
+for (i in 1:length(cleaned_cycle_laboratory)){
+  if (i %in% c(47, 49, 155, 158, 266, 568, 514, 507)) {
+    next
+  }
+  print(i)
+  print(cleaned_cycle_laboratory[i])
+  print(cleaned_data_file_name_laboratory[i])
+  nhanes_load_data(cleaned_data_file_name_laboratory[i], cleaned_cycle_laboratory[i], destination = "~/HMS/NHANES_preprocessing/extraction/data/laboratory/")
+}
+```
+
+
+```{r Downloand the examination files, warning=TRUE}
+for (i in 1:length(cleaned_cycle_examination)){
+  if (i %in% c(43, 55, 126, 143, 144, 146, 158, 159, 160)) {
+    next
+  }
+  print(i)
+  print(cleaned_cycle_examination[i])
+  print(cleaned_data_file_name_examination[i])
+  nhanes_load_data(cleaned_data_file_name_examination[i], cleaned_cycle_examination[i], destination = "~/HMS/NHANES_preprocessing/extraction/data/examination/")
+}
+```
+
+
+```{r Downloand the demographics files, warning=TRUE}
+for (i in 1:length(cleaned_cycle_demographics)){
+  if (i %in% c(11)) {
+    next
+  }
+  print(i)
+  print(cleaned_cycle_demographics[i])
+  print(cleaned_data_file_name_demographics[i])
+  nhanes_load_data(cleaned_data_file_name_demographics[i], cleaned_cycle_demographics[i], destination = "~/HMS/NHANES_preprocessing/extraction/data/demographics/")
+}
+```
