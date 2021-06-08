@@ -67,7 +67,7 @@ SURVEYS = c(
 
 ```{r Load the surveys and save them, warning=TRUE}
 for (survey in SURVEYS){
-  srvyin <- paste0("./data/", survey, "_MORT_2015_PUBLIC.dat")
+  srvyin <- paste0("./data/mortality/raw/", survey, "_MORT_2015_PUBLIC.dat")
   
   dsn <- read_fwf(file=srvyin,
                     col_types = "ciiiiiiiddii",
