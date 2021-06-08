@@ -21,7 +21,7 @@ def cleaning_cli(argvs=sys.argv[1:]):
 
 
 def optimal_function(data_frame):
-    return data_frame.shape[0] ** 2 * data_frame.shape[1]
+    return data_frame.shape[0] * data_frame.shape[1]
 
 
 def remove_nans(data_category, raw_nan_matrix, seqn_variable_trade_off):
