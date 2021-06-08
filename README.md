@@ -15,10 +15,12 @@ renv::restore()
 ```
 If you don't already have the package renv installed. Please install it following the [docs](https://github.com/rstudio/renv).
 
-The file [./extraction/extraction.Rmd] scrape [NHANES website](https://www.cdc.gov/nchs/nhanes/index.htm) and store the files in *./extraction/data/*.
+The file [extraction.Rmd](./extraction/extraction.Rmd) scrape [NHANES website](https://www.cdc.gov/nchs/nhanes/index.htm) and store the files in *./extraction/data/*.
 
 Some files are only available with the format *.sas7dbat* so you need to convert them to the *.csv* format with the [sas7bdat_to_csv](./extraction/sas7bdat_to_csv.Rmd).
 
+For the mortality dataset, files have been download from the [ftp server](https://ftp.cdc.gov/pub/health_statistics/nchs/datalinkage/linked_mortality/) of the 
+Centers for Disease Control. Then, they have been processed using the file [mortality.Rmd](./extraction/mortality.Rmd).
 
 ## [II Fusion](./fusion)
 [Code in Python]\
