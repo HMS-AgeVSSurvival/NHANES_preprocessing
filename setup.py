@@ -13,7 +13,7 @@ setup(
             "fusion=fusion.fusion:fusion_cli",
             "cleaning=cleaning.cleaning:cleaning_cli",
             "casting=casting.casting:casting_cli",
-            "merge_demographics=merge_demographics.merge_demographics:merge_demographics_cli"
+            "merge=merge.merge:merge_cli"
         ]
     },
 )

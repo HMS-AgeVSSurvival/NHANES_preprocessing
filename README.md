@@ -41,6 +41,6 @@ This stage cleans the files obtained in the previous step by removing the nans.
 This stage casts the files obtained in the previous step by casting the types of the variables to float32. When a categorical variable in encountered, the variable is converted in dummy vectors.
 
 
-## [V Merge demographics](./merge_demographics)
+## [V Merge](./merge)
 [Code in Python]\
-This stage merges the files obtained in the previous step with the demographics files. It also adds the description of the variables to their name.
+This stage merges the files obtained in the previous step with the demographics files and the mortality data. It also adds the description of the variables to their name.

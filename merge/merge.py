@@ -3,18 +3,18 @@ import argparse
 import pandas as pd
 
 
-def merge_demographics_cli(argvs=sys.argv[1:]):
-    parser = argparse.ArgumentParser("Merge the demographics file with the files taken from the casting step")
+def merge_cli(argvs=sys.argv[1:]):
+    parser = argparse.ArgumentParser("Merge the demographics and the mortality files with the files taken from the casting step")
     parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory"], required=True)
     parser.add_argument("-c", "--category", help="Name of the category", required=True)
 
     args = parser.parse_args(argvs)
     print(args)
 
-    merge_demographics(args.main_category, args.category)
+    merge(args.main_category, args.category)
 
 
-def merge_demographics(main_category, category):
+def merge(main_category, category):
     demographics = pd.read_feather("casting/data/demographics/demographics.feather").set_index("SEQN")
 
     variable_examination = pd.read_feather("extraction/data/variables_examination.feather", columns=["variable_name", "variable_description"]).drop_duplicates()
@@ -31,4 +31,4 @@ def merge_demographics(main_category, category):
     pruned_variable_name = data_category.columns.str.split("_").map(lambda splitted_variable: splitted_variable[0])
     data_category.columns = data_category.columns + "; " + variable_description.loc[pruned_variable_name, "variable_description"]
 
-    data_category.reset_index().to_feather(f"merge_demographics/data/{main_category}/{category}.feather")
+    data_category.reset_index().to_feather(f"merge/data/{main_category}/{category}.feather")

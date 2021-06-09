@@ -7,7 +7,7 @@ import pandas as pd
 def casting_cli(argvs=sys.argv[1:]):
     parser = argparse.ArgumentParser("Cast the files from the cleaning steps to dummy float vectors")
     parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "demographics"], required=True)
-    parser.add_argument("-c", "--category", help="Name of the category", required=True)
+    parser.add_argument("-c", "--category", help="Name of the category")
 
     args = parser.parse_args(argvs)
     print(args)
