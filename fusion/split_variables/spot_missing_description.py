@@ -15,7 +15,7 @@ if __name__ == "__main__":
         list_missing_variables_description = []
         for file in tqdm(os.listdir(f"extraction/data/{main_category}/")):
             if file[-4:] == ".csv":
-                variables = pd.read_csv(f"extraction/data/{main_category}/{file}").columns.drop(["SEQN", "file_name", "cycle", "begin_year", "end_year"])
+                variables = pd.read_csv(f"extraction/data/{main_category}/{file}").columns
 
                 missing_variables = variables[~variables.isin(variable_description.index)]
 
@@ -24,9 +24,12 @@ if __name__ == "__main__":
                 elif len(missing_variables) > 0:
                     list_missing_variables_description.append(dict(zip(missing_variables.tolist(), [file] * len(missing_variables))))
 
-        missing_variables_description = {k: v for missing_variables_description in list_missing_variables_description for k, v in missing_variables_description.items()}
+        sorted_missing_entire_files = dict(sorted(missing_entire_files.items()))
 
-        with open(f"fusion/splitting/{main_category}_missing_entire_file.json", "w") as outfile:
-            json.dump(missing_entire_files, outfile)
-        with open(f"fusion/splitting/{main_category}_missing_variables_description.json", "w") as outfile:
-            json.dump(missing_variables_description, outfile)
+        missing_variables_description = {k: v for missing_variables_description in list_missing_variables_description for k, v in missing_variables_description.items()}
+        sorted_missing_variables_description = dict(sorted(missing_variables_description.items()))
+        
+        with open(f"fusion/split_variables/splitting/{main_category}_missing_entire_file.json", "w") as outfile:
+            json.dump(sorted_missing_entire_files, outfile)
+        with open(f"fusion/split_variables/splitting/{main_category}_missing_variables_description.json", "w") as outfile:
+            json.dump(sorted_missing_variables_description, outfile)
