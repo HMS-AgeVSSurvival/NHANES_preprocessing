@@ -1,126 +1,67 @@
+import os
 import sys
 import argparse
 import pandas as pd
 from tqdm import tqdm
-import json
 
 
 def fusion_cli(argvs=sys.argv[1:]):
     parser = argparse.ArgumentParser("Fusion of the files taken from NHANES website")
-    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "demographics", "mortality"], required=True)
-    parser.add_argument("-c", "--category", help="Name of the category")
-
+    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "questionnaire", "demographics", "mortality"], required=True)
     args = parser.parse_args(argvs)
     print(args)
 
-    if args.main_category == "mortality":
-        fusion_mortality()
-
-    fusion(args.main_category, args.category)
+    fusion(args.main_category)
 
 
-def load_information_files(main_category, prefix=""):
-    with open(prefix + f"fusion/splitting/split_{main_category}.json") as json_file:
-        splitting = json.load(json_file)
+def fusion(main_category):
+    main_category_categorizer = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{os.environ.get('GOOGLE_SHEET_ID')}/gviz/tq?tqx=out:csv&sheet={main_category}", usecols=["variable", "category"]).set_index("variable")
+    columns_to_take_description = {"variable_name": "variable", "data_file_name": "file_name"}
+    main_category_description = pd.read_feather(f"extraction/data/variables_{main_category}.feather", columns=columns_to_take_description).rename(columns=columns_to_take_description).set_index("variable")
+        
+    main_category_description["category"] = main_category_categorizer["category"]
+    main_category_description.drop(index=main_category_description.index[main_category_description["file_name"].isna() | main_category_description["category"].isna()], inplace=True)
 
-    information_files = pd.read_feather(prefix + f"extraction/data/files_{main_category}.feather", columns=["data_file_description", "data_file_name"])
+    for (category, group_category) in tqdm(main_category_description.groupby(by=["category"])):
+        print(category)
+        min_seqn = float("inf")
+        max_seqn = - float("inf")
 
-    information_files.dropna(how="any", inplace=True)
+        file_names = group_category["file_name"].drop_duplicates()
+        for file_name in file_names:
+            if not os.path.exists(f"extraction/data/{main_category}/{file_name}.csv"):
+                print(f"extraction/data/{main_category}/{file_name}.csv")
+                continue
+            seqn = pd.read_csv(f"extraction/data/{main_category}/{file_name}.csv", usecols=["SEQN"])["SEQN"]
+            if not seqn.is_unique:
+                continue
 
-    return splitting, information_files
-
-
-def get_file_names(main_category, splitting, information_files, category):
-    if main_category == "examination":
-        # Drop files that are not corresponding to the category
-        # Drop PAXRAW_D: cannot be downloaded properly
-        # Drop P_BPXO, P_BMX, P_OHXDEN and P_OHXREF: files not accessible and convered by others
-        # Drop AUXAR_I, AUXTYM_I, AUXWBR_I, PAXRAW_C, SPXRAW_E, SPXRAW_F, SPXRAW_G, PAXDAY_G, PAXDAY_H, PAXHR_G, PAXHR_H, PAXMIN_G, PAXMIN_H: those files are time series
-        files_to_drop = [
-            "PAXRAW_D",
-            "P_BPXO",
-            "P_BMX",
-            "P_OHXDEN",
-            "P_OHXREF",
-            "AUXAR_I",
-            "AUXTYM_I",
-            "AUXWBR_I",
-            "PAXRAW_C",
-            "SPXRAW_E",
-            "SPXRAW_F",
-            "SPXRAW_G",
-            "PAXDAY_G",
-            "PAXDAY_H",
-            "PAXHR_G",
-            "PAXHR_H",
-            "PAXMIN_G",
-            "PAXMIN_H",
-        ]
-    else:
-        # Drop P_DEMO: files not accessible and convered by others
-        files_to_drop = ["P_DEMO"]
-
-    cleaned_information_files = information_files.drop(
-        index=information_files.index[
-            (
-                ~information_files["data_file_description"].isin(
-                    splitting[category]
-                )
+            if seqn.min() < min_seqn:
+                min_seqn = seqn.min()
+            if seqn.max() > max_seqn:
+                max_seqn = seqn.max()
+        
+        data_category = pd.DataFrame(
+                None, index=pd.Index(range(int(min_seqn), int(max_seqn) + 1), name="SEQN")
             )
-            | information_files["data_file_name"].isin(files_to_drop)
-        ]
-    )
+        for file_name in file_names:
+            if not os.path.exists(f"extraction/data/{main_category}/{file_name}.csv"):
+                continue
+            data = pd.read_csv(f"extraction/data/{main_category}/{file_name}.csv").set_index("SEQN")
+            if not data.index.is_unique:
+                continue
 
-    return cleaned_information_files["data_file_name"].drop_duplicates()
+            data.drop(columns=data.columns[~data.columns.isin(group_category.index)], inplace=True)
 
+            data_category.loc[data.index, data.columns] = data
 
-def fusion(main_category, category):
-    splitting, information_files = load_information_files(main_category)
-    file_names = get_file_names(main_category, splitting, information_files, category)
-     
-    # Get the SEQN numbers range
-    min_seqn = float("inf")
-    max_seqn = -float("inf")
-    for file_name in tqdm(file_names):
-        data = pd.read_csv(f"extraction/data/{main_category}/" + file_name + ".csv")
+        columns_object = data_category.columns[data_category.dtypes == "object"]
+        data_category[columns_object] = data_category[columns_object].astype(
+            str, copy=False
+        )
 
-        if data["SEQN"].min() < min_seqn:
-            min_seqn = data["SEQN"].min()
-        if max_seqn < data["SEQN"].max():
-            max_seqn = data["SEQN"].max()
-
-    # Fill the dataframe
-    data_category = pd.DataFrame(
-        None, index=pd.Index(range(int(min_seqn), int(max_seqn) + 1), name="SEQN")
-    )
-
-    for file_name in tqdm(file_names):
-        data = pd.read_csv(
-            f"extraction/data/{main_category}/" + file_name + ".csv"
-        ).set_index("SEQN")
-
-        if main_category == "demographics":
-            data.drop(columns=data.columns[~data.columns.isin(["RIAGENDR", "RIDAGEYR", "RIDAGEEX", "RIDRETH1"])], inplace=True)
-        else:
-            if (
-                "SPXRAW" not in file_name
-            ):  # "Spirometry - Raw Curve Data" does not contain extra columns
-                data.drop(
-                    columns=["file_name", "cycle", "begin_year", "end_year"], inplace=True
-                )
-
-        data_category.loc[data.index, data.columns] = data
-
-    columns_object = data_category.columns[data_category.dtypes == "object"]
-    data_category[columns_object] = data_category[columns_object].astype(
-        str, copy=False
-    )
-
-    data_category.dropna(how="all", inplace=True)
-    data_category.reset_index().to_feather(
-        f"fusion/data/{main_category}/{category}.feather"
-    )
-
-
-def fusion_mortality():
-    pass
+        data_category.dropna(how="all", inplace=True)
+        print("shape:", data_category.shape)
+        data_category.reset_index().to_feather(
+            f"fusion/data/{main_category}/{category}.feather"
+        )
