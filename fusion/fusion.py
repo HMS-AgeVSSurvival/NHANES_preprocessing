@@ -18,7 +18,7 @@ def fusion(main_category):
     main_category_categorizer = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{os.environ.get('GOOGLE_SHEET_ID')}/gviz/tq?tqx=out:csv&sheet={main_category}", usecols=["variable", "category"]).set_index("variable")
     columns_to_take_description = {"variable_name": "variable", "data_file_name": "file_name"}
     main_category_description = pd.read_feather(f"extraction/data/variables_{main_category}.feather", columns=columns_to_take_description).rename(columns=columns_to_take_description).set_index("variable")
-        
+
     main_category_description["category"] = main_category_categorizer["category"]
     main_category_description.drop(index=main_category_description.index[main_category_description["file_name"].isna() | main_category_description["category"].isna()], inplace=True)
 
@@ -27,29 +27,38 @@ def fusion(main_category):
         min_seqn = float("inf")
         max_seqn = - float("inf")
 
+        no_file = True
+
         file_names = group_category["file_name"].drop_duplicates()
         for file_name in file_names:
             if not os.path.exists(f"extraction/data/{main_category}/{file_name}.csv"):
-                print(f"extraction/data/{main_category}/{file_name}.csv")
                 continue
-            seqn = pd.read_csv(f"extraction/data/{main_category}/{file_name}.csv", usecols=["SEQN"])["SEQN"]
-            if not seqn.is_unique:
+            seqn = pd.read_csv(f"extraction/data/{main_category}/{file_name}.csv")
+            if "SEQN" not in seqn.columns or not seqn["SEQN"].is_unique:
                 continue
-
-            if seqn.min() < min_seqn:
-                min_seqn = seqn.min()
-            if seqn.max() > max_seqn:
-                max_seqn = seqn.max()
+            
+            no_file = False
+            if seqn["SEQN"].min() < min_seqn:
+                min_seqn = seqn["SEQN"].min()
+            if seqn["SEQN"].max() > max_seqn:
+                max_seqn = seqn["SEQN"].max()
         
+        if no_file:
+            print("No file for this category")
+            continue
+
         data_category = pd.DataFrame(
                 None, index=pd.Index(range(int(min_seqn), int(max_seqn) + 1), name="SEQN")
             )
+
         for file_name in file_names:
             if not os.path.exists(f"extraction/data/{main_category}/{file_name}.csv"):
                 continue
-            data = pd.read_csv(f"extraction/data/{main_category}/{file_name}.csv").set_index("SEQN")
-            if not data.index.is_unique:
+            data = pd.read_csv(f"extraction/data/{main_category}/{file_name}.csv")
+            if "SEQN" not in data.columns or not data["SEQN"].is_unique:
                 continue
+
+            data.set_index("SEQN", inplace=True)
 
             data.drop(columns=data.columns[~data.columns.isin(group_category.index)], inplace=True)
 
@@ -63,5 +72,5 @@ def fusion(main_category):
         data_category.dropna(how="all", inplace=True)
         print("shape:", data_category.shape)
         data_category.reset_index().to_feather(
-            f"fusion/data/{main_category}/{category}.feather"
+            f"fusion/data/{main_category}/{category.replace('/', ' or ')}.feather"
         )
