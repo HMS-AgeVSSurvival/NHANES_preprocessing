@@ -7,27 +7,30 @@ import json
 
 def fusion_cli(argvs=sys.argv[1:]):
     parser = argparse.ArgumentParser("Fusion of the files taken from NHANES website")
-    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "demographics"], required=True)
-    parser.add_argument("-c", "--category", help="Name of the category", required=True)
+    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "demographics", "mortality"], required=True)
+    parser.add_argument("-c", "--category", help="Name of the category")
 
     args = parser.parse_args(argvs)
     print(args)
+
+    if args.main_category == "mortality":
+        fusion_mortality()
 
     fusion(args.main_category, args.category)
 
 
 def load_information_files(main_category, prefix=""):
     with open(prefix + f"fusion/splitting/split_{main_category}.json") as json_file:
-        splitting_examination = json.load(json_file)
+        splitting = json.load(json_file)
 
     information_files = pd.read_feather(prefix + f"extraction/data/files_{main_category}.feather", columns=["data_file_description", "data_file_name"])
 
     information_files.dropna(how="any", inplace=True)
 
-    return splitting_examination, information_files
+    return splitting, information_files
 
 
-def get_file_names(main_category, splitting_examination, information_files, category):
+def get_file_names(main_category, splitting, information_files, category):
     if main_category == "examination":
         # Drop files that are not corresponding to the category
         # Drop PAXRAW_D: cannot be downloaded properly
@@ -61,7 +64,7 @@ def get_file_names(main_category, splitting_examination, information_files, cate
         index=information_files.index[
             (
                 ~information_files["data_file_description"].isin(
-                    splitting_examination[category]
+                    splitting[category]
                 )
             )
             | information_files["data_file_name"].isin(files_to_drop)
@@ -72,8 +75,8 @@ def get_file_names(main_category, splitting_examination, information_files, cate
 
 
 def fusion(main_category, category):
-    splitting_examination, information_files = load_information_files(main_category)
-    file_names = get_file_names(main_category, splitting_examination, information_files, category)
+    splitting, information_files = load_information_files(main_category)
+    file_names = get_file_names(main_category, splitting, information_files, category)
      
     # Get the SEQN numbers range
     min_seqn = float("inf")
@@ -117,3 +120,7 @@ def fusion(main_category, category):
     data_category.reset_index().to_feather(
         f"fusion/data/{main_category}/{category}.feather"
     )
+
+
+def fusion_mortality():
+    pass
