@@ -72,5 +72,5 @@ def fusion(main_category):
         data_category.dropna(how="all", inplace=True)
         print("shape:", data_category.shape)
         data_category.reset_index().to_feather(
-            f"fusion/data/{main_category}/{category.replace('/', ' or ')}.feather"
+            f"fusion/data/{main_category}/{category.replace('/', '_or_').replace(' ', '__')}.feather"
         )

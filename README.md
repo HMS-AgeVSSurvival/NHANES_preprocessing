@@ -33,7 +33,7 @@ This stage has the goal to fusion the different files, given by the previous ste
 
 ## [III Cleaning](./cleaning)
 [Code in Python]\
-This stage cleans the files obtained in the previous step by removing the nans.
+This stage cleans the files obtained in the previous step by removing the nans. Create the age of the participants for *demographics*. Create a variable called __survival_type__ for *mortality* that tells the cause of death (cvd, cancer, other or alive).
 
 
 ## [IV Casting](./casting)
