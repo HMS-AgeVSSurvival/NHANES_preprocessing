@@ -6,7 +6,7 @@ import pandas as pd
 
 def casting_cli(argvs=sys.argv[1:]):
     parser = argparse.ArgumentParser("Cast the files from the cleaning steps to dummy float vectors")
-    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "demographics"], required=True)
+    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "questionnaire", "mortality", "demographics"], required=True)
     parser.add_argument("-c", "--category", help="Name of the category")
 
     args = parser.parse_args(argvs)
@@ -23,7 +23,11 @@ def casting(main_category, category):
 
     columns_to_dummies = data_category.columns[data_category.dtypes == "object"]
     if len(columns_to_dummies) > 0:
-        dummies = pd.get_dummies(data_category[columns_to_dummies], prefix=columns_to_dummies, drop_first=True, dtype=np.float32)
+        if main_category == "mortality":
+            dummies = pd.get_dummies(data_category[columns_to_dummies], prefix=columns_to_dummies, drop_first=False, dtype=np.float32)
+        else: 
+            dummies = pd.get_dummies(data_category[columns_to_dummies], prefix=columns_to_dummies, drop_first=True, dtype=np.float32)
+
         
         data_category.drop(columns=columns_to_dummies, inplace=True)
         data_category[dummies.columns] = dummies
