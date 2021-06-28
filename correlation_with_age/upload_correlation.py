@@ -2,10 +2,11 @@ import os
 import sys
 import argparse
 import pandas as pd
+import numpy as np
 from tqdm import tqdm
 import scipy.stats
 
-from correlation_with_age.utils import get_col_values, find_cell, update_cell
+from correlation_with_age.utils import find_cell, update_cell
 
 
 def correlation_with_age_cli(argvs=sys.argv[1:]):
@@ -23,27 +24,31 @@ def correlation_with_age(main_category):
     correlation_col = find_cell(main_category, "age correlation").col
     p_value_col = find_cell(main_category, "p-value").col
 
-    variables = get_col_values(main_category, find_cell(main_category, "variable").col)[1:]            
-    categories = get_col_values(main_category, find_cell(main_category, "category").col)[1:]            
-    variables_categorized = pd.DataFrame.from_dict({"variable": variables, "category": categories})
-    
-    for (category, group_category) in tqdm(variables_categorized.groupby(by=["category"])):
-        path_file = f"fusion/data/{main_category}/{category.replace('/', '_or_').replace(' ', '__').replace('.', '--')}.feather"
+    for category_feather in tqdm(os.listdir(f"fusion/data/{main_category}")):
+        data_category = pd.read_feather(f"fusion/data/{main_category}/{category_feather}").set_index("SEQN")
 
-        if not os.path.exists(path_file):  # The file only contains variables that are not processed
-            continue
-        data_file = pd.read_feather(path_file).set_index("SEQN")
+        for variable in data_category.columns:
+            index_notna = data_category.index[data_category[variable].notna()]
 
-        for variable in group_category["variable"]:
-            if variable not in data_file.columns:  # The file entails non unique SEQN
+            if len(index_notna) <= 1:
                 continue
 
-            index_notna = data_file.index[data_file[variable].notna()]
+            if data_category.loc[index_notna, variable].dtype == "object":
+                dummies = pd.get_dummies(data_category.loc[index_notna, variable], prefix=variable, drop_first=False, dtype=np.float32)
 
-            # If the variable is not categorical and the number of participants is higher than one
-            if data_file.loc[index_notna, variable].dtype != "object" and len(index_notna) > 1 :
-                correlation, p_value = scipy.stats.pearsonr(data_file.loc[index_notna, variable], age.loc[index_notna])
+                correlations, p_values = [], []
+                for dummy_variable in dummies.columns:
+                    correlation_dummy, p_value_dummy = scipy.stats.pearsonr(dummies.loc[index_notna, dummy_variable], age.loc[index_notna])
+                    correlations.append(correlation_dummy)
+                    p_values.append(p_value_dummy)
 
-                variable_row = find_cell(main_category, variable).row
+                correlation = np.max(correlations)
+                p_value = p_values[np.argmax(correlations)]
+            else:
+                correlation, p_value = scipy.stats.pearsonr(data_category.loc[index_notna, variable], age.loc[index_notna])
+
+            variable_row = find_cell(main_category, variable).row
+            if not np.isnan(correlation):
                 update_cell(main_category, variable_row, correlation_col, correlation)
+            if not np.isnan(p_value):
                 update_cell(main_category, variable_row, p_value_col, p_value)

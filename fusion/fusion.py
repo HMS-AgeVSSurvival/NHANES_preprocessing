@@ -64,10 +64,11 @@ def fusion(main_category):
 
             data_category.loc[data.index, data.columns] = data
 
-        columns_object = data_category.columns[data_category.dtypes == "object"]
-        data_category[columns_object] = data_category[columns_object].astype(
-            str, copy=False
-        )
+        # DON'T NEED THOSE LINES -> In casting, track the columns that have an object dtype
+        # columns_object = data_category.columns[data_category.dtypes == "object"]
+        # data_category[columns_object] = data_category[columns_object].astype(
+        #     str, copy=False
+        # )
 
         data_category.dropna(how="all", inplace=True)
         print("shape:", data_category.shape)

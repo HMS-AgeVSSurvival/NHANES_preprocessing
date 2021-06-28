@@ -1,6 +1,5 @@
 import pandas as pd
 from tqdm import tqdm 
-import json
 
 
 COLUMNS_TO_TAKE_CATEGORIZER = {"module": "main_category", "var": "variable", "category": "category"}
