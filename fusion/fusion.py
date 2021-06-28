@@ -15,7 +15,7 @@ def fusion_cli(argvs=sys.argv[1:]):
 
 
 def fusion(main_category):
-    main_category_categorizer = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{os.environ.get('GOOGLE_SPIT_SHEET_ID')}/gviz/tq?tqx=out:csv&sheet={main_category}", usecols=["variable", "category"]).set_index("variable")
+    main_category_categorizer = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{os.environ.get('GOOGLE_SPLIT_SHEET_ID')}/gviz/tq?tqx=out:csv&sheet={main_category}", usecols=["variable", "category"]).set_index("variable")
     columns_to_take_description = {"variable_name": "variable", "data_file_name": "file_name"}
     main_category_description = pd.read_feather(f"extraction/data/variables_{main_category}.feather", columns=columns_to_take_description).rename(columns=columns_to_take_description).set_index("variable")
 

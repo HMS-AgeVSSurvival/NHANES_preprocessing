@@ -4,9 +4,9 @@ setup(
     name="nhanes-preprocessing",
     version="0.1",
     description="Preprocess the data from NHANES dataset.",
-    packages=["fusion", "cleaning", "casting", "merge", "export_shapes"],
+    packages=["fusion", "cleaning", "casting", "merge", "export_shapes", "correlation_check"],
     requires=["setuptools", "wheel"],
-    install_requires=["numpy", "pandas", "pyarrow", "xport==2.0.2"],
+    install_requires=["numpy", "pandas", "pyarrow", "xport==2.0.2", "gspread", "scipy"],
     extras_require={"dev": ["tqdm", "jupyter", "ipympl", "black", "matplotlib", "openpyxl"]},
     entry_points={
         "console_scripts": [

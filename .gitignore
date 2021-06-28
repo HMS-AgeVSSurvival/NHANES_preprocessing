@@ -137,5 +137,5 @@ dmypy.json
 /casting/data
 /merge/data
 /export_shapes/data
-
+/credentials
 *.zip
