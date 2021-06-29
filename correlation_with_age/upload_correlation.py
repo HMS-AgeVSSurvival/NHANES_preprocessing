@@ -20,6 +20,7 @@ def correlation_with_age_cli(argvs=sys.argv[1:]):
 
 def correlation_with_age(main_category):
     age = pd.read_feather("cleaning/data/demographics/demographics.feather", columns=["SEQN", "RIDAGEEX_extended"]).set_index("SEQN")["RIDAGEEX_extended"]
+    age_indexes = age.index
 
     correlation_col = find_cell(main_category, "age correlation").col
     p_value_col = find_cell(main_category, "p-value").col
@@ -28,7 +29,7 @@ def correlation_with_age(main_category):
         data_category = pd.read_feather(f"fusion/data/{main_category}/{category_feather}").set_index("SEQN")
 
         for variable in data_category.columns:
-            index_notna = data_category.index[data_category[variable].notna()]
+            index_notna = data_category.index[data_category[variable].notna()].intersection(age_indexes)
 
             if len(index_notna) <= 1:
                 continue
