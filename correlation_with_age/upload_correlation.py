@@ -27,6 +27,7 @@ def correlation_with_age(main_category):
     sample_size_col = find_cell(main_category, "sample size").col
 
     for category_feather in tqdm(os.listdir(f"fusion/data/{main_category}")):
+        print(category_feather.split(".feather")[0])
         data_category = pd.read_feather(f"fusion/data/{main_category}/{category_feather}").set_index("SEQN")
 
         for variable in data_category.columns:

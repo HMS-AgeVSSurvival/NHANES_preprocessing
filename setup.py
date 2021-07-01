@@ -14,7 +14,8 @@ setup(
             "cleaning=cleaning.cleaning:cleaning_cli",
             "casting=casting.casting:casting_cli",
             "merge=merge.merge:merge_cli",
-            "correlation_with_age=correlation_with_age.upload_correlation:correlation_with_age_cli"
+            "correlation_with_age=correlation_with_age.upload_correlation:correlation_with_age_cli",
+            "scatter_plot=correlation_with_age.scatter_plot:scatter_plot_cli"
         ]
     },
 )

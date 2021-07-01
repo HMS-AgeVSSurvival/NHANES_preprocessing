@@ -139,3 +139,4 @@ dmypy.json
 /export_shapes/data
 /credentials
 *.zip
+/correlation_with_age/scatter_plots
