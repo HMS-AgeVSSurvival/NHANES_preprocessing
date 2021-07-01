@@ -6,7 +6,7 @@ import numpy as np
 from tqdm import tqdm
 import scipy.stats
 
-from correlation_with_age.utils import find_cell, update_cell
+from utils.google_sheets_sdk import find_cell, update_cell
 
 
 def correlation_with_age_cli(argvs=sys.argv[1:]):
@@ -24,6 +24,7 @@ def correlation_with_age(main_category):
 
     correlation_col = find_cell(main_category, "age correlation").col
     p_value_col = find_cell(main_category, "p-value").col
+    sample_size_col = find_cell(main_category, "sample size").col
 
     for category_feather in tqdm(os.listdir(f"fusion/data/{main_category}")):
         data_category = pd.read_feather(f"fusion/data/{main_category}/{category_feather}").set_index("SEQN")
@@ -53,3 +54,4 @@ def correlation_with_age(main_category):
                 update_cell(main_category, variable_row, correlation_col, correlation)
             if not np.isnan(p_value):
                 update_cell(main_category, variable_row, p_value_col, p_value)
+            update_cell(main_category, variable_row, sample_size_col, len(index_notna))
