@@ -3,7 +3,7 @@ import pandas as pd
 COLUMNS_TO_TAKE = {"var": "variable", "var_desc": "variable_description", "category": "category", "module": "main_category"}
 
 if __name__ == "__main__":
-    variable_description = pd.read_csv("fusion/data/VarDescription.csv", usecols=COLUMNS_TO_TAKE).rename(columns=COLUMNS_TO_TAKE)
+    variable_description = pd.read_csv("fusion/data/VarDescription_Chirag.csv", usecols=COLUMNS_TO_TAKE).rename(columns=COLUMNS_TO_TAKE)
 
     for main_category in ["examination", "laboratory", "demographics", "questionnaire"]:
         variable_main_category = pd.read_feather(f"extraction/data/variables_{main_category}.feather")

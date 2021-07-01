@@ -2,7 +2,10 @@ import os
 import sys
 import argparse
 import pandas as pd
+import numpy as np
 from tqdm import tqdm
+
+from utils.google_sheets_sdk import get_col_values
 
 
 def fusion_cli(argvs=sys.argv[1:]):
@@ -15,14 +18,15 @@ def fusion_cli(argvs=sys.argv[1:]):
 
 
 def fusion(main_category):
-    main_category_categorizer = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{os.environ.get('GOOGLE_SPLIT_SHEET_ID')}/gviz/tq?tqx=out:csv&sheet={main_category}", usecols=["variable", "category"]).set_index("variable")
+    categorized_variable = pd.DataFrame(np.array([get_col_values(main_category, "category")[1:], get_col_values(main_category, "encode age")[:1]]).T, columns=["category", "encode_age"], index=get_col_values(main_category, "variable")[:1])
+
     columns_to_take_description = {"variable_name": "variable", "data_file_name": "file_name"}
-    main_category_description = pd.read_feather(f"extraction/data/variables_{main_category}.feather", columns=columns_to_take_description).rename(columns=columns_to_take_description).set_index("variable")
+    splitter = pd.read_feather(f"extraction/data/variables_{main_category}.feather", columns=columns_to_take_description).rename(columns=columns_to_take_description).set_index("variable")
 
-    main_category_description["category"] = main_category_categorizer["category"]
-    main_category_description.drop(index=main_category_description.index[main_category_description["file_name"].isna() | main_category_description["category"].isna()], inplace=True)
+    splitter["category"] = categorized_variable["category"]
+    splitter.drop(index=splitter.index[splitter["file_name"].isna() | splitter["category"].isna() | splitter.index.isin(categorized_variable.index[categorized_variable["encode_age"]])], inplace=True)
 
-    for (category, group_category) in tqdm(main_category_description.groupby(by=["category"])):
+    for (category, group_category) in tqdm(splitter.groupby(by=["category"])):
         print(category)
         min_seqn = float("inf")
         max_seqn = - float("inf")
@@ -44,7 +48,7 @@ def fusion(main_category):
                 max_seqn = seqn["SEQN"].max()
         
         if no_file:
-            print("No file for this category")
+            print("No file for this category \n\n")
             continue
 
         data_category = pd.DataFrame(
@@ -64,14 +68,14 @@ def fusion(main_category):
 
             data_category.loc[data.index, data.columns] = data
 
-        # DON'T NEED THOSE LINES -> In casting, track the columns that have an object dtype
-        # columns_object = data_category.columns[data_category.dtypes == "object"]
-        # data_category[columns_object] = data_category[columns_object].astype(
-        #     str, copy=False
-        # )
+        # Need to remove object dtype to store in feather format
+        columns_object = data_category.columns[data_category.dtypes == "object"]
+        data_category[columns_object] = data_category[columns_object].astype(
+            str, copy=False
+        )
 
-        data_category.dropna(how="all", inplace=True)
-        print("shape:", data_category.shape)
+        data_category.dropna(axis="index", how="all", inplace=True)
+        print("Shape: ", data_category.shape)
         data_category.reset_index().to_feather(
             f"fusion/data/{main_category}/{category.replace('/', '_or_').replace(' ', '__').replace('.', '--')}.feather"
         )

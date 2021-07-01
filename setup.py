@@ -4,10 +4,10 @@ setup(
     name="nhanes-preprocessing",
     version="0.1",
     description="Preprocess the data from NHANES dataset.",
-    packages=["fusion", "cleaning", "casting", "merge", "export_shapes", "correlation_with_age"],
+    packages=["fusion", "cleaning", "casting", "merge", "correlation_with_age", "utils"],
     requires=["setuptools", "wheel"],
-    install_requires=["numpy", "pandas", "pyarrow", "xport==2.0.2", "gspread", "scipy"],
-    extras_require={"dev": ["tqdm", "jupyter", "ipympl", "black", "matplotlib", "openpyxl"]},
+    install_requires=["numpy", "pandas", "pyarrow", "xport==2.0.2", "gspread", "scipy", "matplotlib", "openpyxl"],
+    extras_require={"dev": ["tqdm", "jupyter", "ipympl", "black"]},
     entry_points={
         "console_scripts": [
             "fusion=fusion.fusion:fusion_cli",
