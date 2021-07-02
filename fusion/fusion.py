@@ -18,13 +18,13 @@ def fusion_cli(argvs=sys.argv[1:]):
 
 
 def fusion(main_category):
-    categorized_variable = pd.DataFrame(np.array([get_col_values(main_category, "category")[1:], get_col_values(main_category, "encode age")[:1]]).T, columns=["category", "encode_age"], index=get_col_values(main_category, "variable")[:1])
+    categorized_variable = pd.DataFrame(np.array([get_col_values(main_category, "category")[1:], get_col_values(main_category, "to remove")[1:]]).T, columns=["category", "to remove"], index=get_col_values(main_category, "variable")[1:])
 
     columns_to_take_description = {"variable_name": "variable", "data_file_name": "file_name"}
     splitter = pd.read_feather(f"extraction/data/variables_{main_category}.feather", columns=columns_to_take_description).rename(columns=columns_to_take_description).set_index("variable")
 
     splitter["category"] = categorized_variable["category"]
-    splitter.drop(index=splitter.index[splitter["file_name"].isna() | splitter["category"].isna() | splitter.index.isin(categorized_variable.index[categorized_variable["encode_age"]])], inplace=True)
+    splitter.drop(index=splitter.index[splitter["file_name"].isna() | splitter["category"].isna() | splitter.index.isin(categorized_variable.index[categorized_variable["to remove"] == "TRUE"])], inplace=True)
 
     for (category, group_category) in tqdm(splitter.groupby(by=["category"])):
         print(category)
