@@ -19,6 +19,7 @@ def merge(main_category, category):
     mortality = pd.read_feather("casting/data/mortality/mortality.feather").set_index("SEQN")
 
     variable_main_category = pd.read_feather(f"extraction/data/variables_{main_category}.feather", columns=["variable_name", "variable_description"]).drop_duplicates()
+    variable_main_category.drop(index=variable_main_category.index[variable_main_category["variable_name"].isin(["RIAGENDR", "RIDRETH1"])], inplace=True)
     variable_demographics = pd.read_feather("extraction/data/variables_demographics.feather", columns=["variable_name", "variable_description"]).drop_duplicates()
     
     variable_description = pd.concat((variable_main_category, variable_demographics)).reset_index(drop=True)
@@ -38,6 +39,6 @@ def merge(main_category, category):
 
         pruned_variable_name = pd.Index(series_pruned_variable_name.values)
 
-    columns_to_rename = dict(zip(data_category.columns[~data_category.columns.isin(mortality.columns)], data_category.columns.drop(mortality.columns) + "; " + variable_description.loc[pruned_variable_name, "variable_description"]))
+    columns_to_rename = dict(zip(data_category.columns.drop(mortality.columns), data_category.columns.drop(mortality.columns) + "; " + variable_description.loc[pruned_variable_name, "variable_description"]))
 
     data_category.rename(columns=columns_to_rename).reset_index().to_feather(f"merge/data/{main_category}/{category}.feather")
