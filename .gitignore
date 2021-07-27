@@ -135,6 +135,8 @@ dmypy.json
 /fusion/data
 /cleaning/data
 /casting/data
-/merge_demographics/data
-
+/merge/data
+/export_shapes/data
+/credentials
 *.zip
+/correlation_with_age/scatter_plots

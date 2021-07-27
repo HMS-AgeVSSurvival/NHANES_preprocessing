@@ -1,0 +1,106 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r Variable description, warning=TRUE}
+# # Variable frequencies
+# 
+# #ELIGSTAT: Eligibility Status for Mortality Follow-up
+# table(dsn$eligstat)
+# #1 = "Eligible"
+# #2 = "Under age 18, not available for public release"
+# #3 = "Ineligible"
+# 
+# #MORTSTAT: Final Mortality Status
+# table(dsn$mortstat, useNA="ifany")
+# # 0 = Assumed alive
+# # 1 = Assumed deceased
+# # <NA> = Ineligible or under age 18
+# 
+# #UCOD_LEADING: Underlying Cause of Death: Recode
+# table(dsn$ucod_leading, useNA="ifany")
+# # 1 = Diseases of heart (I00-I09, I11, I13, I20-I51)
+# # 2 = Malignant neoplasms (C00-C97)
+# # 3 = Chronic lower respiratory diseases (J40-J47)
+# # 4 = Accidents (unintentional injuries) (V01-X59, Y85-Y86)
+# # 5 = Cerebrovascular diseases (I60-I69)
+# # 6 = Alzheimer's disease (G30)
+# # 7 = Diabetes mellitus (E10-E14)
+# # 8 = Influenza and pneumonia (J09-J18)
+# # 9 = Nephritis, nephrotic syndrome and nephrosis (N00-N07, N17-N19, N25-N27)
+# # 10 = All other causes (residual)
+# # <NA> = Ineligible, under age 18, assumed alive, or no cause of death data
+# 
+# #DIABETES: Diabetes Flag from Multiple Cause of Death (MCOD)
+# table(dsn$diabetes, useNA="ifany")
+# # 0 = No - Condition not listed as a multiple cause of death
+# # 1 = Yes - Condition listed as a multiple cause of death
+# # <NA> = Assumed alive, under age 18, ineligible for mortality follow-up, or MCOD not available
+# 
+# #HYPERTEN: Hypertension Flag from Multiple Cause of Death (MCOD)
+# table(dsn$hyperten, useNA="ifany")
+# # 0 = No - Condition not listed as a multiple cause of death
+# # 1 = Yes - Condition listed as a multiple cause of death
+# # <NA> = Assumed alive, under age 18, ineligible for mortality follow-up, or MCOD not available
+```
+```{r Load libraries, warning=TRUE}
+library(readr)
+library(dplyr)
+library(feather)
+```
+
+```{r Define surveys, warning=TRUE}
+SURVEYS = c(
+  "NHANES_1999_2000", 
+  "NHANES_2001_2002", 
+  "NHANES_2003_2004", 
+  "NHANES_2005_2006", 
+  "NHANES_2007_2008", 
+  "NHANES_2009_2010",
+  "NHANES_2011_2012", 
+  "NHANES_2013_2014",
+  "NHANES_III"
+  )
+```
+
+
+```{r Load the surveys and save them, warning=TRUE}
+for (survey in SURVEYS){
+  srvyin <- paste0("./data/mortality/raw/", survey, "_MORT_2015_PUBLIC.dat")
+  
+  dsn <- read_fwf(file=srvyin,
+                    col_types = "ciiiiiiiddii",
+                    fwf_cols(publicid = c(1,14),
+                             eligstat = c(15,15),
+                             mortstat = c(16,16),
+                             ucod_leading = c(17,19),
+                             diabetes = c(20,20),
+                             hyperten = c(21,21),
+                             dodqtr = c(22,22),
+                             dodyear = c(23,26),
+                             wgt_new = c(27,34),
+                             sa_wgt_new = c(35,42),
+                             permth_int = c(43,45),
+                             permth_exm = c(46,48)
+                    ),
+                    na = "."
+    )
+  
+  # create the ID (SEQN) for the NHANES surveys
+  dsn$seqn <- substr(dsn$publicid,1,5)
+  # NOTE:   SEQN is the unique ID for NHANES.
+  
+  #Drop NHIS variables and useful variables
+  dsn <- select(dsn, -publicid)
+  dsn <- select(dsn, -dodqtr)
+  dsn <- select(dsn, -dodyear)
+  dsn <- select(dsn, -wgt_new)
+  dsn <- select(dsn, -sa_wgt_new)
+  dsn <- select(dsn, -eligstat)
+  dsn <- select(dsn, -diabetes)
+  dsn <- select(dsn, -hyperten)
+  
+  write_feather(dsn, paste0("./data/mortality/", survey, ".feather"))
+}
+```

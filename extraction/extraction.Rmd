@@ -19,10 +19,12 @@ variables <- nhanes_variables()
 files_laboratory <- nhanes_search(files, "", component == "laboratory")
 files_examination <- nhanes_search(files, "", component == "examination")
 files_demographics <- nhanes_search(files, "", component == "demographics")
+files_questionnaire <- nhanes_search(files, "", component == "questionnaire")
 
 variables_laboratory <- nhanes_search(variables, "", component == "laboratory")
 variables_examination <- nhanes_search(variables, "", component == "examination")
 variables_demographics <- nhanes_search(variables, "", component == "demographics")
+variables_questionnaire <- nhanes_search(variables, "", component == "questionnaire")
 ```
 
 
@@ -30,10 +32,12 @@ variables_demographics <- nhanes_search(variables, "", component == "demographic
 write_feather(files_laboratory, "./data/files_laboratory.feather")
 write_feather(files_examination, "./data/files_examination.feather")
 write_feather(files_demographics, "./data/files_demographics.feather")
+write_feather(files_questionnaire, "./data/files_questionnaire.feather")
 
 write_feather(variables_laboratory, "./data/variables_laboratory.feather")
 write_feather(variables_examination, "./data/variables_examination.feather")
 write_feather(variables_demographics, "./data/variables_demographics.feather")
+write_feather(variables_questionnaire, "./data/variables_questionnaire.feather")
 ```
 
 
@@ -46,6 +50,9 @@ cleaned_cycle_examination <- files_examination["cycle"][is.na(files_examination[
 
 cleaned_data_file_name_demographics <- files_demographics["data_file_name"][is.na(files_demographics["data_file_name"]) == FALSE]
 cleaned_cycle_demographics <- files_demographics["cycle"][is.na(files_demographics["data_file_name"]) == FALSE]
+
+cleaned_data_file_name_questionnaire <- files_questionnaire["data_file_name"][is.na(files_questionnaire["data_file_name"]) == FALSE]
+cleaned_cycle_questionnaire <- files_questionnaire["cycle"][is.na(files_questionnaire["data_file_name"]) == FALSE]
 ```
 
 
@@ -84,5 +91,18 @@ for (i in 1:length(cleaned_cycle_demographics)){
   print(cleaned_cycle_demographics[i])
   print(cleaned_data_file_name_demographics[i])
   nhanes_load_data(cleaned_data_file_name_demographics[i], cleaned_cycle_demographics[i], destination = "~/HMS/NHANES_preprocessing/extraction/data/demographics/")
+}
+```
+
+
+```{r Downloand the questionnaire files, warning=TRUE}
+for (i in 268:length(cleaned_cycle_questionnaire)){
+  if (i %in% c(51, 110, 267)) {
+    next
+  }
+  print(i)
+  print(cleaned_cycle_questionnaire[i])
+  print(cleaned_data_file_name_questionnaire[i])
+  nhanes_load_data(cleaned_data_file_name_questionnaire[i], cleaned_cycle_questionnaire[i], destination = "~/HMS/NHANES_preprocessing/extraction/data/questionnaire/")
 }
 ```

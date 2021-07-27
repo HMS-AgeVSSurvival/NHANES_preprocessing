@@ -7,21 +7,23 @@ from tqdm import tqdm
 
 def cleaning_cli(argvs=sys.argv[1:]):
     parser = argparse.ArgumentParser("Cleaning of the files after the fusion step")
-    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "demographics"], required=True)
-    parser.add_argument("-c", "--category", help="Name of the category", required=True)
-    parser.add_argument("-n", "--number_tradeoffs", help="Number of tradeoffs to try", type=int)
+    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "questionnaire", "demographics", "mortality"], required=True)
+    parser.add_argument("-c", "--category", help="Name of the category")
+    parser.add_argument("-n", "--number_tradeoffs", help="Number of tradeoffs to try", type=int, default=2)
 
     args = parser.parse_args(argvs)
     print(args)
 
     if args.main_category == "demographics":
         cleaning_demographics()
+    elif args.main_category == "mortality":
+        cleaning_mortality()
     else:
         cleaning(args.main_category, args.category, args.number_tradeoffs)
 
 
 def optimal_function(data_frame):
-    return data_frame.shape[0] ** 2 * data_frame.shape[1]
+    return data_frame.shape[0] * data_frame.shape[1]
 
 
 def remove_nans(data_category, raw_nan_matrix, seqn_variable_trade_off):
@@ -86,3 +88,18 @@ def cleaning_demographics():
     data_category["RIDAGEEX_extended"] = cleaned_age_in_month
 
     data_category.drop(columns=["RIDAGEYR", "RIDAGEEX"]).reset_index().to_feather(f"cleaning/data/demographics/demographics.feather")
+
+
+def cleaning_mortality():
+    data_category = pd.read_feather("fusion/data/mortality/mortality.feather").set_index("SEQN")
+
+    data_category.drop(index=data_category.index[data_category["ucod_leading"].isin([4.0, 10.0])], inplace=True)
+    data_category["survival_type"] = data_category["ucod_leading"].map({1.0: "cvd", 2.0: "cancer", 3.0: "other", 5.0: "other", 6.0: "other", 7.0: "other", 8.0: "other", 9.0: "other"})
+    data_category.loc[data_category["survival_type"].isna() & (data_category["mortstat"] == 1), "survival_type"] = "other"
+    data_category.loc[data_category["mortstat"] == 0, "survival_type"] = "alive"
+
+    data_category["follow_up_time"] = data_category["permth_exm"]
+    data_category.loc[data_category["permth_exm"].isna(), "follow_up_time"] = data_category["permth_int"]
+
+    data_category.drop(columns=["ucod_leading", "permth_int", "permth_exm"]).reset_index().to_feather(f"cleaning/data/mortality/mortality.feather")
+
