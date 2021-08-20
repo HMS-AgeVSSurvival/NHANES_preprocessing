@@ -50,3 +50,8 @@ This stage casts the files obtained in the previous step by casting the types of
 ## [V Merge](./merge)
 [Code in Python]\
 This stage merges the files obtained in the previous step with the demographics files and the mortality data. It also adds the description of the variables to their name.
+
+
+## [VI Correlation with age](./correlation_with_age)
+[Code in Python]\
+This is state is independant of the rest of the stages. It computes the correlation between the age and the variables. Thus, it updates the columns _age correlation_, _p-value_ and _sample size_ in the google sheet [variable_categorizer](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131).
