@@ -1,10 +1,16 @@
 # NHANES_preprocessing
-Preprocessing of NHANES into different categories.
+
+[![Super linter](https://github.com/HMS-Internship/NHANES_preprocessing/actions/workflows/linter.yml/badge.svg)](https://github.com/Deep-Learning-and-Aging/Website/actions/workflows/linter.yml)
+
+Preprocessing of NHANES into different main categories.
 
 The main categories that we are going to leverage are:
 - demographics
 - laboratory
 - examination
+- questionnaire
+
+Feel free to start a discussion to ask anything [here](https://github.com/HMS-Internship/NHANES_preprocessing/discussions).
 
 
 ## [I Extraction](./extraction)
@@ -15,7 +21,7 @@ renv::restore()
 ```
 If you don't already have the package renv installed. Please install it following the [docs](https://github.com/rstudio/renv).
 
-The file [extraction.Rmd](./extraction/extraction.Rmd) scrape [NHANES website](https://www.cdc.gov/nchs/nhanes/index.htm) and store the files in *./extraction/data/*.
+The file [extraction.Rmd](./extraction/extraction.Rmd) scrapes [NHANES website](https://www.cdc.gov/nchs/nhanes/index.htm) and stores the files in *./extraction/data/*.
 
 Some files are only available with the format *.sas7dbat* so you need to convert them to the *.csv* format with the file [sas7bdat_to_csv.Rmd](./extraction/sas7bdat_to_csv.Rmd).
 
@@ -28,12 +34,12 @@ Start by installing the Python package thanks the the [setup.py](./setup.py) fil
 ```Python
 pip install -e .[dev]
 ```
-This stage has the goal to fusion the different files, given by the previous step, into one single file, representing a category. The way the categories are formed is shown in the google sheet [variable_categorizer](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131). This google sheet reports the name of the variables with their description and the category they have been assigned to, along with other information.
+This stage has the goal to fusion the different files, given by the previous step, into one single file, representing a category. The way the categories are formed is shown in the google sheet [variable_categorizer](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131). This google sheet reports the name of the variables with their description and the category they have been assigned to, along with other information. Among them, you have the correlations between the variables and the age of the participants.
 
 
 ## [III Cleaning](./cleaning)
 [Code in Python]\
-This stage cleans the files obtained in the previous step by removing the nans. After removing the nans, the columns with a null standard deviation are removed. Create the age of the participants for *demographics*. Create a variable called __survival_type__ for *mortality* that tells the cause of death (cvd, cancer, other or alive).
+This stage cleans the files obtained in the previous step by removing the nans. After removing the nans, the columns with a null standard deviation are removed. It also creates the age of the participants for *demographics*. Finally, it creates a variable called __survival_type__ for *mortality* that tells the cause of death (cvd, cancer, other).
 
 
 ## [IV Casting](./casting)
