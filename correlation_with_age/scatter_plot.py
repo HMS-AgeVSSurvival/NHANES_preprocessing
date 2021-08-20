@@ -8,8 +8,22 @@ from utils.google_sheets_sdk import find_cell, get_cell
 
 
 def scatter_plot_cli(argvs=sys.argv[1:]):
-    parser = argparse.ArgumentParser("Plot the scatter plot of a variable of NHANES dataset")
-    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "questionnaire", "demographics", "mortality"], required=True)
+    parser = argparse.ArgumentParser(
+        "Plot the scatter plot of a variable of NHANES dataset"
+    )
+    parser.add_argument(
+        "-mc",
+        "--main_category",
+        help="Name of the main category",
+        choices=[
+            "examination",
+            "laboratory",
+            "questionnaire",
+            "demographics",
+            "mortality",
+        ],
+        required=True,
+    )
     parser.add_argument("-v", "--variable", help="Name of the varaible", required=True)
     args = parser.parse_args(argvs)
     print(args)
@@ -25,8 +39,14 @@ def scatter_plot(main_category, variable):
     category = get_cell(main_category, variable_row, category_col).value
     description = get_cell(main_category, variable_row, variable_description_col).value
 
-    data_variable = pd.read_feather(f"fusion/data/{main_category}/{category.replace('/', '_or_').replace(' ', '__').replace('.', '--')}.feather", columns=["SEQN", variable]).set_index("SEQN")[variable]
-    age = pd.read_feather("cleaning/data/demographics/demographics.feather", columns=["SEQN", "RIDAGEEX_extended"]).set_index("SEQN")["RIDAGEEX_extended"]
+    data_variable = pd.read_feather(
+        f"fusion/data/{main_category}/{category.replace('/', '_or_').replace(' ', '__').replace('.', '--')}.feather",
+        columns=["SEQN", variable],
+    ).set_index("SEQN")[variable]
+    age = pd.read_feather(
+        "cleaning/data/demographics/demographics.feather",
+        columns=["SEQN", "RIDAGEEX_extended"],
+    ).set_index("SEQN")["RIDAGEEX_extended"]
 
     valid_indexes = age.index.intersection(data_variable.index[data_variable.notna()])
     min_age = int((age.loc[valid_indexes].min() / 12).round())

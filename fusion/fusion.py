@@ -10,7 +10,19 @@ from utils.google_sheets_sdk import get_col_values
 
 def fusion_cli(argvs=sys.argv[1:]):
     parser = argparse.ArgumentParser("Fusion of the files taken from NHANES website")
-    parser.add_argument("-mc", "--main_category", help="Name of the main category", choices=["examination", "laboratory", "questionnaire", "demographics", "mortality"], required=True)
+    parser.add_argument(
+        "-mc",
+        "--main_category",
+        help="Name of the main category",
+        choices=[
+            "examination",
+            "laboratory",
+            "questionnaire",
+            "demographics",
+            "mortality",
+        ],
+        required=True,
+    )
     args = parser.parse_args(argvs)
     print(args)
 
@@ -18,18 +30,46 @@ def fusion_cli(argvs=sys.argv[1:]):
 
 
 def fusion(main_category):
-    categorized_variable = pd.DataFrame(np.array([get_col_values(main_category, "category")[1:], get_col_values(main_category, "to remove")[1:]]).T, columns=["category", "to remove"], index=get_col_values(main_category, "variable")[1:])
+    categorized_variable = pd.DataFrame(
+        np.array(
+            [
+                get_col_values(main_category, "category")[1:],
+                get_col_values(main_category, "to remove")[1:],
+            ]
+        ).T,
+        columns=["category", "to remove"],
+        index=get_col_values(main_category, "variable")[1:],
+    )
 
-    columns_to_take_description = {"variable_name": "variable", "data_file_name": "file_name"}
-    splitter = pd.read_feather(f"extraction/data/variables_{main_category}.feather", columns=columns_to_take_description).rename(columns=columns_to_take_description).set_index("variable")
+    columns_to_take_description = {
+        "variable_name": "variable",
+        "data_file_name": "file_name",
+    }
+    splitter = (
+        pd.read_feather(
+            f"extraction/data/variables_{main_category}.feather",
+            columns=columns_to_take_description,
+        )
+        .rename(columns=columns_to_take_description)
+        .set_index("variable")
+    )
 
     splitter["category"] = categorized_variable["category"]
-    splitter.drop(index=splitter.index[splitter["file_name"].isna() | splitter["category"].isna() | splitter.index.isin(categorized_variable.index[categorized_variable["to remove"] == "TRUE"])], inplace=True)
+    splitter.drop(
+        index=splitter.index[
+            splitter["file_name"].isna()
+            | splitter["category"].isna()
+            | splitter.index.isin(
+                categorized_variable.index[categorized_variable["to remove"] == "TRUE"]
+            )
+        ],
+        inplace=True,
+    )
 
     for (category, group_category) in tqdm(splitter.groupby(by=["category"])):
         print(category)
         min_seqn = float("inf")
-        max_seqn = - float("inf")
+        max_seqn = -float("inf")
 
         no_file = True
 
@@ -40,20 +80,20 @@ def fusion(main_category):
             seqn = pd.read_csv(f"extraction/data/{main_category}/{file_name}.csv")
             if "SEQN" not in seqn.columns or not seqn["SEQN"].is_unique:
                 continue
-            
+
             no_file = False
             if seqn["SEQN"].min() < min_seqn:
                 min_seqn = seqn["SEQN"].min()
             if seqn["SEQN"].max() > max_seqn:
                 max_seqn = seqn["SEQN"].max()
-        
+
         if no_file:
             print("No file for this category \n\n")
             continue
 
         data_category = pd.DataFrame(
-                None, index=pd.Index(range(int(min_seqn), int(max_seqn) + 1), name="SEQN")
-            )
+            None, index=pd.Index(range(int(min_seqn), int(max_seqn) + 1), name="SEQN")
+        )
 
         for file_name in file_names:
             if not os.path.exists(f"extraction/data/{main_category}/{file_name}.csv"):
@@ -64,7 +104,10 @@ def fusion(main_category):
 
             data.set_index("SEQN", inplace=True)
 
-            data.drop(columns=data.columns[~data.columns.isin(group_category.index)], inplace=True)
+            data.drop(
+                columns=data.columns[~data.columns.isin(group_category.index)],
+                inplace=True,
+            )
 
             data_category.loc[data.index, data.columns] = data
 

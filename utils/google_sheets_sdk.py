@@ -7,9 +7,11 @@ import json
 
 def get_worksheet(main_category):
     service_account_id = np.random.randint(1, 6)
-    gc = gspread.service_account(filename=f"credentials/credentials_{service_account_id}.json")
+    gc = gspread.service_account(
+        filename=f"credentials/credentials_{service_account_id}.json"
+    )
     google_sheet = gc.open_by_key(os.environ.get("GOOGLE_SPLIT_SHEET_ID"))
-    
+
     return google_sheet.worksheet(main_category)
 
 
