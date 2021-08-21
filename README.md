@@ -12,6 +12,10 @@ The main categories that we are going to leverage are:
 
 Feel free to start a discussion to ask anything [here](https://github.com/HMS-Internship/NHANES_preprocessing/discussions).
 
+After extracting the data, if you have access to a cluster of computers, 35 minutes is needed to run the other steps ([Fusion](##II-Fusion), [Cleaning](##III-Cleaning), [Casting](##IV-Casting), [Merge](##V-Merge)) that will lead you to ready to use datasets containing only floats without missing values.
+
+Shell scripts are available to launch jobs for Slurm clusters. They are always stored the same way: ./*step*/shell_script/run_*step*.sh
+
 ## [I Extraction](./extraction)
 [Code in R]\
 Start by restoring the R environment thanks to the [renv.lock](./renv.lock) file :
@@ -54,11 +58,11 @@ This stage merges the files obtained in the previous step with the demographics 
 
 ## [VI Correlation with age](./correlation_with_age)
 [Code in Python]\
-This state is independant of the rest of the stages. It computes the correlation between the age and the variables. Thus, it updates the columns _age correlation_, _p-value_ and _sample size_ in the google sheet [__variable_categorizer__](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131).
+This state is independant from the rest of the stages. It computes the correlation between the age and the variables. Thus, it updates the columns _age correlation_, _p-value_ and _sample size_ in the google sheet [__variable_categorizer__](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131).
 
 ## [VII Scatter plot](./correlation_with_age)
 [Code in Python]\
-This state is also independant of the rest of the stages. It displays the scatter plot of a desired variable of NHANES with age in month as the X-axis. To use it:
+This state is also independant from the rest of the stages. It displays the scatter plot of a desired variable of NHANES with age in month as the X-axis. To use it:
 ```Bash
 scatter_plot --main_category laboratory --variable LBDBHC
 ```
