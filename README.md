@@ -33,7 +33,12 @@ Start by installing the Python package thanks the the [setup.py](./setup.py) fil
 ```Python
 pip install -e .[dev]
 ```
-This stage has the goal to fusion the different files, given by the previous step, into one single file, representing a category. The way the categories are formed is shown in the google sheet [variable_categorizer](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131). This google sheet reports the name of the variables with their description and the category they have been assigned to, along with other information. Among them, you have the correlations between the variables and the age of the participants.
+This stage has the goal to fusion the different files, given by the previous step, into one single file, representing a category. The way the categories are formed is shown in the google sheet [__variable_categorizer__](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131). This google sheet reports the name of the variables with their description and the category they have been assigned to, along with other information. Among them, you have the correlations between the variables and the age of the participants.
+
+You need to set the environment variable GOOGLE_SPLIT_SHEET_ID in order to interact with the google sheet __variable_categorizer__. A good way of doing it, is to set this variable in the *activate* file of your python virtual environment adding the following:
+```Python
+export GOOGLE_SPLIT_SHEET_ID="1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI"
+```
 
 ## [III Cleaning](./cleaning)
 [Code in Python]\
@@ -49,7 +54,7 @@ This stage merges the files obtained in the previous step with the demographics 
 
 ## [VI Correlation with age](./correlation_with_age)
 [Code in Python]\
-This state is independant of the rest of the stages. It computes the correlation between the age and the variables. Thus, it updates the columns _age correlation_, _p-value_ and _sample size_ in the google sheet [variable_categorizer](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131).
+This state is independant of the rest of the stages. It computes the correlation between the age and the variables. Thus, it updates the columns _age correlation_, _p-value_ and _sample size_ in the google sheet [__variable_categorizer__](https://docs.google.com/spreadsheets/d/1wyfNAD_SgmIlKXK-2QFcBu7eH4xPJKbWe4PLOIIlriI/edit#gid=303839131).
 
 ## [VII Scatter plot](./correlation_with_age)
 [Code in Python]\
