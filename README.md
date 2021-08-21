@@ -64,6 +64,9 @@ This state is independant from the rest of the stages. It computes the correlati
 [Code in Python]\
 This state is also independant from the rest of the stages. It displays the scatter plot of a desired variable of NHANES with age in month as the X-axis. To use it:
 ```Bash
-scatter_plot --main_category laboratory --variable LBDBHC
+scatter_plot --main_category examination --variable BMXWT
 ```
-
+Here is what you get for the weights of the NHANES participants:
+<DIV ALIGN="CENTER">
+<td><img width="600px" src=".github/png_for_readme/BMXWT.png"></td> <br>
+</DIV>
