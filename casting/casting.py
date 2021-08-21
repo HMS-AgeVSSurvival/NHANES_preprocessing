@@ -21,7 +21,7 @@ def casting_cli(argvs=sys.argv[1:]):
         ],
         required=True,
     )
-    parser.add_argument("-c", "--category", help="Name of the category")
+    parser.add_argument("-c", "--category", help="Name of the category", required=True)
 
     args = parser.parse_args(argvs)
     print(args)
