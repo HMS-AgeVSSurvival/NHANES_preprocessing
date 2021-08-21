@@ -14,7 +14,7 @@ setup(
     ],
     requires=["setuptools", "wheel"],
     install_requires=[
-        "numpy==1.16.5",
+        "numpy==1.16.6",
         "pandas==1.2.4",
         "pyarrow==4.0.1",
         "xport==2.0.2",
