@@ -20,13 +20,13 @@ def cleaning_cli(argvs=sys.argv[1:]):
         ],
         required=True,
     )
-    parser.add_argument("-c", "--category", help="Name of the category")
+    parser.add_argument("-c", "--category", help="Name of the category", required=True)
     parser.add_argument(
         "-n",
         "--number_tradeoffs",
         help="Number of tradeoffs to try",
         type=int,
-        default=2,
+        required=True
     )
 
     args = parser.parse_args(argvs)
