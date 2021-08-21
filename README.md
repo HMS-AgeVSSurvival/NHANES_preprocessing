@@ -66,7 +66,7 @@ This state is also independant from the rest of the stages. It displays the scat
 ```Bash
 scatter_plot --main_category examination --variable BMXWT
 ```
-Here is what you get for the weights of the NHANES participants:
+Here is what you get for the weight of the NHANES participants:
 <DIV ALIGN="CENTER">
 <td><img width="600px" src=".github/png_for_readme/BMXWT.png"></td> <br>
 </DIV>
