@@ -1,6 +1,6 @@
 # NHANES_preprocessing
 
-[![Super linter](https://github.com/HMS-Internship/NHANES_preprocessing/actions/workflows/linter.yml/badge.svg)](https://github.com/Deep-Learning-and-Aging/Website/actions/workflows/linter.yml)
+[![Super linter](https://github.com/HMS-Internship/NHANES_preprocessing/actions/workflows/linter.yml/badge.svg)](https://github.com/HMS-Internship/NHANES_preprocessing/actions/workflows/linter.yml)
 
 Preprocessing of NHANES into different main categories.
 
