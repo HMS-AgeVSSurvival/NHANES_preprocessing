@@ -12,7 +12,7 @@ The main categories that we are going to leverage are:
 
 Feel free to start a discussion to ask anything [here](https://github.com/HMS-Internship/NHANES_preprocessing/discussions).
 
-After extracting the data, if you have access to a cluster of computers, 35 minutes is needed to run the other steps ([Fusion](##II-Fusion), [Cleaning](##III-Cleaning), [Casting](##IV-Casting), [Merge](##V-Merge)) that will lead you to ready to use datasets containing only floats without missing values.
+After extracting the data, if you have access to a cluster of computers, 35 minutes is needed to run the other steps ([Fusion](#II-Fusion), [Cleaning](#III-Cleaning), [Casting](#IV-Casting), [Merge](#V-Merge)) that will lead you to ready to use datasets containing only floats without missing values.
 
 Shell scripts are available to launch jobs for Slurm clusters. They are always stored the same way: ./*step*/shell_script/run_*step*.sh
 
